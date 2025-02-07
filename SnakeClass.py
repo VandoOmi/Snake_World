@@ -51,6 +51,8 @@ class Snake:
             if i > self.__length:
                 self.__positions.pop(i)
 
+                # Hallo Fabian
+
     def reset_length(self):
         self.__length = 1
 
