@@ -107,3 +107,7 @@ class SnakeGame:
 
             self.__draw_objects()
             self.__update_screen()
+
+
+game = SnakeGame()
+game.main_loop()
