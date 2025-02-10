@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 
 from Food import Food
@@ -13,7 +14,8 @@ class SnakeGame:
     def __init__(self):
         pygame.init()
 
-        self.__tick_speed = 5;
+        self.__tick_speed = 5
+        self.__isPaused = False
         self.__clock = pygame.time.Clock()
         self.__screen = pygame.display.set_mode((Settings.screen_width, Settings.screen_height), 0, 32)
         self.__surface = pygame.Surface(self.__screen.get_size())
@@ -23,7 +25,7 @@ class SnakeGame:
         self.__number_of_devoured_foods = 0
         self.__snake = Snake()
 
-        self.__food = Food(random_food_type())
+        self.__foods = [Food(random_food_type()),Food(random_food_type()),Food(random_food_type())]
 
 
         self.__my_font = pygame.font.SysFont("monospace", 16)
@@ -55,6 +57,9 @@ class SnakeGame:
                     self.__snake.turn(Settings.right)
                 elif event.key == pygame.K_ESCAPE:
                     self.__quit_game()
+                elif event.key == pygame.K_q:
+                    self.__isPaused = not self.__isPaused
+
 
     def __randomize_position_food(self):
         while True:
@@ -65,24 +70,26 @@ class SnakeGame:
                     return pos
 
     def __check_snake_food_collision(self):
-        if self.__snake.get_head_position() == self.__food.get_position():
-            self.__snake.increase_score(1)
-            self.__tick_speed = self.__tick_speed + 1
-            self.__number_of_devoured_foods += 1
-            if self.__food.get_food_type() == FoodType.DOUBLE_UP:
-                self.__snake.half_length()
-                self.__tick_speed = self.__tick_speed * 2
-            if self.__food.get_food_type() == FoodType.EXTRA_LIFE:
-                self.__snake.increase_length()
-            if self.__food.get_food_type() == FoodType.NORMAL:
-                self.__snake.increase_length()
-            self.__food = Food(random_food_type())
-            self.__food.set_position(self.__randomize_position_food())
+        for food in self.__foods:
+            if self.__snake.get_head_position() == food.get_position():
+                self.__snake.increase_score(1)
+                self.__tick_speed = self.__tick_speed + 1
+                self.__number_of_devoured_foods += 1
+                if food.get_food_type() == FoodType.DOUBLE_UP:
+                    self.__snake.half_length()
+                    self.__tick_speed = self.__tick_speed * 2
+                if food.get_food_type() == FoodType.EXTRA_LIFE:
+                    self.__snake.increase_length()
+                if food.get_food_type() == FoodType.NORMAL:
+                    self.__snake.increase_length()
+                food = Food(random_food_type())
+                food.set_position(self.__randomize_position_food())
 
 
     def __draw_objects(self):
         self.__snake.draw(self.__surface)
-        self.__food.draw(self.__surface)
+        for food in self.__foods:
+            food.draw(self.__surface)
 
 
     def __update_screen(self):
@@ -100,10 +107,11 @@ class SnakeGame:
             self.__check_tick_amount()
             self.__clock.tick(self.__tick_speed)
             self.__handle_keys()
-            self.__draw_grid(self.__surface)
-            self.__snake.move()
+            if not self.__isPaused:
+                self.__draw_grid(self.__surface)
+                self.__snake.move()
 
-            self.__check_snake_food_collision()
+                self.__check_snake_food_collision()
 
-            self.__draw_objects()
-            self.__update_screen()
+                self.__draw_objects()
+                self.__update_screen()
