@@ -3,6 +3,7 @@ import random
 import pygame
 
 from FoodType import FoodType
+from Settings import Settings
 
 
 class Food:
