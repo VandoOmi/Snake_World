@@ -13,7 +13,7 @@ class SnakeGame:
     def __init__(self):
         pygame.init()
 
-        self.__tick_speed = 5;
+        self.__tick_speed = 5
         self.__clock = pygame.time.Clock()
         self.__screen = pygame.display.set_mode((Settings.screen_width, Settings.screen_height), 0, 32)
         self.__surface = pygame.Surface(self.__screen.get_size())
@@ -101,13 +101,12 @@ class SnakeGame:
             self.__clock.tick(self.__tick_speed)
             self.__handle_keys()
             self.__draw_grid(self.__surface)
-            self.__snake.move()
+            if not self.__snake.move():
+                self.reset_tick_speed()
 
             self.__check_snake_food_collision()
 
             self.__draw_objects()
             self.__update_screen()
-
-
-game = SnakeGame()
-game.main_loop()
+    def reset_tick_speed(self):
+        self.__tick_speed = 5
