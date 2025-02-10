@@ -1,5 +1,6 @@
 from enum import Enum
 
+from Food import Food
 from FoodType import FoodType, random_food_type
 from Snake import *
 
