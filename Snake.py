@@ -24,10 +24,12 @@ class Snake:
                (head_pos[1] + (y * Settings.grid_size)) % Settings.screen_height)
         if len(self.__positions) > 2 and new in self.__positions[2:]:
             self.reset()
+            return False
         else:
             self.__positions.insert(0, new)
             if len(self.__positions) > self.__length:
                 self.__positions.pop()
+            return True
 
     def get_positions(self):
         return self.__positions
