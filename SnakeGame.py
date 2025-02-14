@@ -3,10 +3,16 @@ from enum import Enum
 from Food import Food
 from FoodType import FoodType, random_food_type
 from Snake import *
+from Fire import *
 
 import pygame
 import sys
 import random
+
+
+def random_position():
+    return (random.randint(0, int(Settings.grid_width)-1) * Settings.grid_size,
+                       random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
 
 
 class SnakeGame:
@@ -16,7 +22,7 @@ class SnakeGame:
         self.__tick_speed = 5
         self.__is_paused = False
         self.__clock = pygame.time.Clock()
-        self.__screen = pygame.display.set_mode((Settings.screen_width, Settings.screen_height), 0, 32)
+        self.__screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         self.__surface = pygame.Surface(self.__screen.get_size())
         self.__surface = self.__surface.convert()
 
@@ -25,6 +31,7 @@ class SnakeGame:
         self.__snake = Snake()
 
         self.__foods = [Food(random_food_type()),Food(random_food_type()),Food(random_food_type())]
+        self.__fires = [Fire(random_position()),Fire(random_position())]
 
 
         self.__my_font = pygame.font.SysFont("monospace", 16)
@@ -92,6 +99,8 @@ class SnakeGame:
         self.__snake.draw(self.__surface)
         for food in self.__foods:
             food.draw(self.__surface)
+        for fire in self.__fires:
+            fire.draw(self.__surface)
 
 
     def __update_screen(self):
@@ -112,6 +121,17 @@ class SnakeGame:
         if self.__tick_speed >= 50:
             self.__tick_speed =  50
 
+    def __check_fire_spreed(self):
+
+        match random.randint(0, 10):
+            case 1|3|5|7|9:
+                self.__fires.append(Fire(self.__fires[random.randint(0, len(self.__fires) - 1)].get_random_nearby_position()))
+            case 2|4|6|8|10:
+                if len(self.__fires) > 1:
+                    self.__fires.remove(self.__fires[random.randint(0, len(self.__fires) - 1)])
+            case 0:
+                self.__fires.append(Fire(random_position()))
+
     def main_loop(self):
         while True:
             self.__check_tick_amount()
@@ -122,6 +142,7 @@ class SnakeGame:
                 self.__snake.move()
 
                 self.__check_snake_food_collision()
+                self.__check_fire_spreed()
 
                 self.__draw_objects()
                 self.__update_screen()

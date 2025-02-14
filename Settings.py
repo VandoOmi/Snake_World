@@ -1,6 +1,6 @@
 class Settings:
-    screen_width = 480
-    screen_height = 480
+    screen_width = 1960
+    screen_height = 1080
 
     grid_size = 20
     grid_width = screen_width / grid_size
