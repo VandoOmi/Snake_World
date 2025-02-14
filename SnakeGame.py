@@ -28,6 +28,8 @@ class SnakeGame:
 
 
         self.__my_font = pygame.font.SysFont("monospace", 16)
+        self.__my_font2 = pygame.font.SysFont("monospace", 16)
+
 
     def __draw_grid(self, surface):
         for y in range(0, int(Settings.grid_height)):
@@ -77,6 +79,7 @@ class SnakeGame:
                     self.__snake.half_length()
                     self.__tick_speed = self.__tick_speed * 2
                 if food.get_food_type() == FoodType.EXTRA_LIFE:
+                    self.__snake.increase_life()
                     self.__snake.increase_length()
                 if food.get_food_type() == FoodType.NORMAL:
                     self.__snake.increase_length()
@@ -93,9 +96,17 @@ class SnakeGame:
 
     def __update_screen(self):
         self.__screen.blit(self.__surface, (0, 0))
-        text = self.__my_font.render("Score {0}".format(self.__snake.get_score()), True, (0, 0, 0))
-        self.__screen.blit(text, (5, 10))
+        text = self.__my_font.render("Score: {0}".format(self.__snake.get_score()), True, (0, 0, 0))
+        text2 = self.__my_font.render("Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
+
+        text_rect = text.get_rect(topleft=(10, 10))
+        text2_rect = text2.get_rect(topleft=(text_rect.right + 10, 10))
+
+        self.__screen.blit(text, text_rect)
+        self.__screen.blit(text2, text2_rect)
+
         pygame.display.update()
+
 
     def __check_tick_amount(self):
         if self.__tick_speed >= 50:
@@ -114,3 +125,4 @@ class SnakeGame:
 
                 self.__draw_objects()
                 self.__update_screen()
+                

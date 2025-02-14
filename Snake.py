@@ -12,6 +12,8 @@ class Snake:
         self.__direction = random.choice(Settings.directions)
         self.__color = (17, 24, 47)
         self.__score = 0
+        self.__life = 0
+        self.__max_life =3
 
     def turn(self, new_direction):
         if (new_direction[0]*-1, new_direction[1]*-1) != self.__direction:  # cannot do a 180
@@ -23,13 +25,21 @@ class Snake:
         new = (((head_pos[0] + (x * Settings.grid_size)) % Settings.screen_width),
                (head_pos[1] + (y * Settings.grid_size)) % Settings.screen_height)
         if len(self.__positions) > 2 and new in self.__positions[2:]:
-            self.reset()
-            return False
+            self.decrease_life()
+            if self.__life ==0:
+                self.reset()
+                return False
         else:
             self.__positions.insert(0, new)
             if len(self.__positions) > self.__length:
                 self.__positions.pop()
             return True
+
+    def decrease_life(self):
+        if  self.__life !=0:
+            self.__life -= 1
+        self.__max_life -= 1
+        self.__positions = [((Settings.screen_width / 2), (Settings.screen_height / 2))]
 
     def get_positions(self):
         return self.__positions
@@ -42,6 +52,7 @@ class Snake:
         self.__positions = [((Settings.screen_width/2), (Settings.screen_height/2))]
         self.__direction = random.choice(Settings.directions)
         self.__score = 0
+        self.__max_life =3
 
     def increase_length(self):
         self.__length += 1
@@ -66,6 +77,12 @@ class Snake:
 
     def reset_score(self):
         self.__score = 0
+    def increase_life(self):
+        if self.__life < self.__max_life:
+            self.__life +=1
+
+    def get_life(self):
+        return self.__life
 
     def draw(self, surface):
         for pos in self.__positions:
