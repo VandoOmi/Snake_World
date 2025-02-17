@@ -80,19 +80,27 @@ class SnakeGame:
         for food in self.__foods:
             if self.__snake.get_head_position() == food.get_position():
                 self.__snake.increase_score(1)
-                self.__tick_speed = self.__tick_speed + 1
+                self.__tick_speed = self.__tick_speed + 0.75
                 self.__number_of_devoured_foods += 1
                 if food.get_food_type() == FoodType.DOUBLE_UP:
                     self.__snake.half_length()
-                    self.__tick_speed = self.__tick_speed * 2
+                    self.__tick_speed = self.__tick_speed * 1.25
                 if food.get_food_type() == FoodType.EXTRA_LIFE:
                     self.__snake.increase_life()
                     self.__snake.increase_length()
+                    self.__tick_speed = self.__tick_speed + 0.75
                 if food.get_food_type() == FoodType.NORMAL:
                     self.__snake.increase_length()
                 self.__foods.remove(food)
                 self.__foods.append(Food(random_food_type()))
                 food.set_position(self.__randomize_position_food())
+
+    def __check_snake_fire_collision(self):
+        for fire in self.__fires:
+
+            if self.__snake.get_head_position() == fire.get_position():
+                self.__snake.reset()
+                print("snake position: ", self.__snake.get_head_position(),"           fire postion: ", fire.get_position(),"                 ")
 
 
     def __draw_objects(self):
@@ -106,7 +114,7 @@ class SnakeGame:
     def __update_screen(self):
         self.__screen.blit(self.__surface, (0, 0))
         text = self.__my_font.render("Score: {0}".format(self.__snake.get_score()), True, (0, 0, 0))
-        text2 = self.__my_font.render("Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
+        text2 = self.__my_font.render("Extra Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
 
         text_rect = text.get_rect(topleft=(10, 10))
         text2_rect = text2.get_rect(topleft=(text_rect.right + 10, 10))
@@ -141,6 +149,7 @@ class SnakeGame:
                 self.__draw_grid(self.__surface)
                 self.__snake.move()
 
+                self.__check_snake_fire_collision()
                 self.__check_snake_food_collision()
                 self.__check_fire_spreed()
 

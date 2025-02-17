@@ -48,11 +48,15 @@ class Snake:
         return self.__positions[0]
 
     def reset(self):
-        self.reset_length()
-        self.__positions = [((Settings.screen_width/2), (Settings.screen_height/2))]
-        self.__direction = random.choice(Settings.directions)
-        self.__score = 0
-        self.__max_life =3
+        self.decrease_life()
+        if self.__life == 0:
+            self.reset_length()
+            self.__positions = [((Settings.screen_width/2), (Settings.screen_height/2))]
+            self.__direction = random.choice(Settings.directions)
+            self.__score = 0
+            self.__max_life =3
+            self.__life=0
+
 
     def increase_length(self):
         self.__length += 1
