@@ -7,6 +7,7 @@ class FoodType(Enum):
     EXTRA_LIFE = 2
     NORMAL = 3
 
+
 def random_food_type():
     if random.randint(1, 100) > 50:
         return FoodType.NORMAL

@@ -22,7 +22,7 @@ class Food:
         self.__position = pos
 
     def __randomize_position(self):
-        self.__position = (random.randint(0, int(Settings.grid_width)-1) * Settings.grid_size,
+        self.__position = (random.randint(0, int(Settings.grid_width) - 1) * Settings.grid_size,
                            random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
 
     def draw(self, surface):

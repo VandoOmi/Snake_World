@@ -1,18 +1,14 @@
-from enum import Enum
+import sys
 
+from Fire import *
 from Food import Food
 from FoodType import FoodType, random_food_type
 from Snake import *
-from Fire import *
-
-import pygame
-import sys
-import random
 
 
 def random_position():
-    return (random.randint(0, int(Settings.grid_width)-1) * Settings.grid_size,
-                       random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
+    return (random.randint(0, int(Settings.grid_width) - 1) * Settings.grid_size,
+            random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
 
 
 class SnakeGame:
@@ -30,23 +26,23 @@ class SnakeGame:
         self.__number_of_devoured_foods = 0
         self.__snake = Snake()
 
-        self.__foods = [Food(random_food_type()),Food(random_food_type()),Food(random_food_type())]
-        self.__fires = [Fire(random_position()),Fire(random_position())]
-
+        self.__foods = [Food(random_food_type()), Food(random_food_type()), Food(random_food_type())]
+        self.__fires = [Fire(random_position()), Fire(random_position())]
 
         self.__my_font = pygame.font.SysFont("monospace", 16)
         self.__my_font2 = pygame.font.SysFont("monospace", 16)
 
-
-    def __draw_grid(self, surface):
+    @staticmethod
+    def __draw_grid(surface):
         for y in range(0, int(Settings.grid_height)):
             for x in range(0, int(Settings.grid_width)):
                 r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size),
                                 (Settings.grid_size, Settings.grid_size))
-                color = (93, 216, 228) if (x+y) % 2 == 0 else (84, 194, 205)
+                color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
                 pygame.draw.rect(surface, color, r)
 
-    def __quit_game(self):
+    @staticmethod
+    def __quit_game():
         pygame.quit()
         sys.exit()
 
@@ -70,8 +66,8 @@ class SnakeGame:
 
     def __randomize_position_food(self):
         while True:
-            pos =  (random.randint(0, int(Settings.grid_width)-1) * Settings.grid_size,
-                               random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
+            pos = (random.randint(0, int(Settings.grid_width) - 1) * Settings.grid_size,
+                   random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
             for get_position in self.__snake.get_positions():
                 if get_position != pos:
                     return pos
@@ -84,7 +80,7 @@ class SnakeGame:
                 self.__number_of_devoured_foods += 1
                 if food.get_food_type() == FoodType.DOUBLE_UP:
                     self.__snake.half_length()
-                    self.__tick_speed = self.__tick_speed * 1.25
+                    self.__tick_speed = self.__tick_speed * (4 / 3)
                 if food.get_food_type() == FoodType.EXTRA_LIFE:
                     self.__snake.increase_life()
                     self.__snake.increase_length()
@@ -99,9 +95,10 @@ class SnakeGame:
         for fire in self.__fires:
 
             if self.__snake.get_head_position() == fire.get_position():
-                self.__snake.reset()
-                print("snake position: ", self.__snake.get_head_position(),"           fire postion: ", fire.get_position(),"                 ")
+                print("snake position: ", self.__snake.get_head_position(), "           fire postion: ",
+                      fire.get_position(), "                 ")
 
+                self.__snake.reset()
 
     def __draw_objects(self):
         self.__snake.draw(self.__surface)
@@ -109,7 +106,6 @@ class SnakeGame:
             food.draw(self.__surface)
         for fire in self.__fires:
             fire.draw(self.__surface)
-
 
     def __update_screen(self):
         self.__screen.blit(self.__surface, (0, 0))
@@ -124,17 +120,17 @@ class SnakeGame:
 
         pygame.display.update()
 
-
     def __check_tick_amount(self):
         if self.__tick_speed >= 50:
-            self.__tick_speed =  50
+            self.__tick_speed = 50
 
     def __check_fire_spreed(self):
 
         match random.randint(0, 10):
-            case 1|3|5|7|9:
-                self.__fires.append(Fire(self.__fires[random.randint(0, len(self.__fires) - 1)].get_random_nearby_position()))
-            case 2|4|6|8|10:
+            case 1 | 3 | 5 | 7 | 9:
+                self.__fires.append(
+                    Fire(self.__fires[random.randint(0, len(self.__fires) - 1)].get_random_nearby_position()))
+            case 2 | 4 | 6 | 8 | 10:
                 if len(self.__fires) > 1:
                     self.__fires.remove(self.__fires[random.randint(0, len(self.__fires) - 1)])
             case 0:
@@ -155,4 +151,3 @@ class SnakeGame:
 
                 self.__draw_objects()
                 self.__update_screen()
-                
