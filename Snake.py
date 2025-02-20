@@ -1,6 +1,7 @@
 import random
 
-import pygame
+import pygame 
+from pygame import Color
 
 from Settings import Settings
 
@@ -14,6 +15,8 @@ class Snake:
         self.__score = 0
         self.__life = 0
         self.__max_life = 3
+        self.__color = (0, 0, 0)        #mit set_color() kann die geändert werden
+
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -46,6 +49,8 @@ class Snake:
 
     def get_head_position(self):
         return self.__positions[0]
+    def set_color(self, new_color):
+        self.color = new_color
 
     def reset(self):
         self.decrease_life()
@@ -105,7 +110,7 @@ class Snake:
         return self.__life
 
     def draw(self, surface):
-        for pos in self.__positions:
-            r = pygame.Rect((pos[0], pos[1]), (Settings.grid_size, Settings.grid_size))
-            pygame.draw.rect(surface, self.__color, r)
-            pygame.draw.rect(surface, (93, 216, 228), r, 1)
+            for pos in self.__positions:
+                r = pygame.Rect((pos[0], pos[1]), (Settings.grid_size, Settings.grid_size))
+                pygame.draw.rect(surface, self.__color, r) 
+                pygame.draw.rect(surface, (93, 216, 228), r, 1)
