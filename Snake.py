@@ -57,12 +57,14 @@ class Snake:
             self.reset_variables()
             
 
-    def saveHighscore(self):
+    def get_highscore(self):
         with open("highscore/HighscoreSave", "r") as file:
             line = file.readline().strip()  
             highscore = int(line.split(": ")[1]) 
-
-        if self.get_score() > highscore:
+        return highscore
+            
+    def saveHighscore(self):
+        if self.get_score() > self.get_highscore():
             with open("highscore/HighscoreSave", "w") as file:
                 file.write(f"highscore: {self.get_score()}")  
 

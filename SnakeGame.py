@@ -108,14 +108,10 @@ class SnakeGame:
             fire.draw(self.__surface)
 
     def __update_screen(self):
-        with open("highscore/HighscoreSave", "r") as file:
-            line = file.readline().strip()  
-            highscore = int(line.split(": ")[1]) 
-
         self.__screen.blit(self.__surface, (0, 0))
         text_score = self.__my_font.render("Score: {0}".format(self.__snake.get_score()), True, (0, 0, 0))
         text_extra_Life = self.__my_font.render("Extra Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
-        text_highscore = self.__my_font.render("Highscore: {0}".format(highscore), True, (0, 0, 0))
+        text_highscore = self.__my_font.render("Highscore: {0}".format(self.__snake.get_highscore()), True, (0, 0, 0))
 
 
         text_score_rect = text_score.get_rect(topleft=(10, 10))
