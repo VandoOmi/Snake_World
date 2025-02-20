@@ -49,7 +49,8 @@ class Snake:
 
     def reset(self):
         self.decrease_life()
-        if self.__life < 0:
+        print(self.__life)
+        if self.__life <= 0:
             self.reset_length()
             self.__positions = [((Settings.screen_width / 2), (Settings.screen_height / 2))]
             self.__direction = random.choice(Settings.directions)
