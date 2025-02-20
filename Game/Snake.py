@@ -1,6 +1,7 @@
 import random
 
 import pygame
+from pygame import Color
 
 from .Settings import Settings
 
@@ -8,12 +9,14 @@ from .Settings import Settings
 class Snake:
     def __init__(self):
         self.__length = 1
-        self.__positions = [((Settings.screen_width / 2), (Settings.screen_height / 2))]
+        self.__positions = [((Settings.screen_width / 2),
+                             (Settings.screen_height / 2))]
         self.__direction = random.choice(Settings.directions)
-        self.__color = (17, 24, 47)
+        self.__color = (17, 24, 47)  # mit set_color() kann die geändert werden
         self.__score = 0
         self.__life = 0
-        self.__max_life = 3
+        self.__max_life = 0
+        self.__temp_max_life =0
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -39,7 +42,8 @@ class Snake:
         if self.__life != 0:
             self.__life -= 1
         self.__max_life -= 1
-        self.__positions = [((Settings.screen_width / 2), (Settings.screen_height / 2))]
+        self.__positions = [((Settings.screen_width / 2),
+                             (Settings.screen_height / 2))]
 
     def get_positions(self):
         return self.__positions
@@ -47,16 +51,38 @@ class Snake:
     def get_head_position(self):
         return self.__positions[0]
 
+    def set_color(self, new_color):
+        self.color = new_color
+
+    def set_max_life(self, max_life):
+        self.__max_life = max_life
+        self.__temp_max_life =max_life
+
     def reset(self):
         self.decrease_life()
-        print(self.__life)
         if self.__life <= 0:
             self.reset_length()
-            self.__positions = [((Settings.screen_width / 2), (Settings.screen_height / 2))]
+            self.__positions = [
+                ((Settings.screen_width / 2), (Settings.screen_height / 2))]
             self.__direction = random.choice(Settings.directions)
-            self.__score = 0
-            self.__max_life = 3
-            self.__life = 0
+            self.saveHighscore()
+            self.reset_variables()
+
+    def get_highscore(self):
+        with open("highscore/HighscoreSave", "r") as file:
+            line = file.readline().strip()
+            highscore = int(line.split(": ")[1])
+        return highscore
+
+    def saveHighscore(self):
+        if self.get_score() > self.get_highscore():
+            with open("highscore/HighscoreSave", "w") as file:
+                file.write(f"highscore: {self.get_score()}")
+
+    def reset_variables(self):
+        self.__score = 0
+        self.__max_life=self.__temp_max_life
+        self.__life = 0
 
     def increase_length(self):
         self.__length += 1
@@ -91,6 +117,7 @@ class Snake:
 
     def draw(self, surface):
         for pos in self.__positions:
-            r = pygame.Rect((pos[0], pos[1]), (Settings.grid_size, Settings.grid_size))
+            r = pygame.Rect((pos[0], pos[1]),
+                            (Settings.grid_size, Settings.grid_size))
             pygame.draw.rect(surface, self.__color, r)
             pygame.draw.rect(surface, (93, 216, 228), r, 1)

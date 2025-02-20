@@ -1,9 +1,10 @@
 import sys
 
-from .Fire import *
-from .Food import Food
-from .FoodType import FoodType, random_food_type
-from .Snake import *
+from Difficulty import *
+from Fire import *
+from Food import Food
+from FoodType import FoodType, random_food_type
+from Snake import *
 
 
 def random_position():
@@ -12,7 +13,7 @@ def random_position():
 
 
 class SnakeGame:
-    def __init__(self):
+    def __init__(self,difficulty):
         pygame.init()
 
         self.__tick_speed = 5
@@ -23,11 +24,14 @@ class SnakeGame:
         self.__number_of_devoured_foods = 0
         self.__snake = Snake()
 
-        self.__foods = [Food(random_food_type()), Food(random_food_type()), Food(random_food_type())]
+        self.__foods = [Food(random_food_type(difficulty)), Food(
+            random_food_type(difficulty)), Food(random_food_type(difficulty))]
         self.__fires = [Fire(random_position()), Fire(random_position())]
 
         self.__my_font = pygame.font.SysFont("monospace", 16)
-        self.__my_font2 = pygame.font.SysFont("monospace", 16)
+        
+        self.__difficulty =Schwierigkeit (difficulty)
+        self.__snake.set_max_life(difficulty.max_life)
 
     @staticmethod
     def __draw_grid(surface):
@@ -60,19 +64,19 @@ class SnakeGame:
         for food in self.__foods:
             if self.__snake.get_head_position() == food.get_position():
                 self.__snake.increase_score(1)
-                self.__tick_speed = self.__tick_speed + 0.75
+                self.__tick_speed = self.__tick_speed + self.__difficulty.speed
                 self.__number_of_devoured_foods += 1
                 if food.get_food_type() == FoodType.DOUBLE_UP:
                     self.__snake.half_length()
-                    self.__tick_speed = self.__tick_speed * (4 / 3)
+                    self.__tick_speed = self.__tick_speed + self.__difficulty.speed*3
                 if food.get_food_type() == FoodType.EXTRA_LIFE:
                     self.__snake.increase_life()
                     self.__snake.increase_length()
-                    self.__tick_speed = self.__tick_speed + 0.75
+                    self.__tick_speed = self.__tick_speed + self.__difficulty.speed
                 if food.get_food_type() == FoodType.NORMAL:
                     self.__snake.increase_length()
                 self.__foods.remove(food)
-                self.__foods.append(Food(random_food_type()))
+                self.__foods.append(Food(random_food_type(self.__difficulty)))
                 food.set_position(self.__randomize_position_food())
 
     def __check_snake_fire_collision(self):
@@ -93,14 +97,22 @@ class SnakeGame:
 
     def __update_screen(self):
         self.__screen.blit(self.__surface, (0, 0))
-        text = self.__my_font.render("Score: {0}".format(self.__snake.get_score()), True, (0, 0, 0))
-        text2 = self.__my_font.render("Extra Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
+        text_score = self.__my_font.render("Score: {0}".format(
+            self.__snake.get_score()), True, (0, 0, 0))
+        text_extra_Life = self.__my_font.render(
+            "Extra Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
+        text_highscore = self.__my_font.render("Highscore: {0}".format(
+            self.__snake.get_highscore()), True, (0, 0, 0))
 
-        text_rect = text.get_rect(topleft=(10, 10))
-        text2_rect = text2.get_rect(topleft=(text_rect.right + 10, 10))
+        text_score_rect = text_score.get_rect(topleft=(10, 10))
+        text_extra_life_rect = text_extra_Life.get_rect(
+            topleft=(text_score_rect.right + 10, 10))
+        text_highscore_rect = text_highscore.get_rect(
+            topleft=(text_extra_life_rect.right + 10, 10))
 
-        self.__screen.blit(text, text_rect)
-        self.__screen.blit(text2, text2_rect)
+        self.__screen.blit(text_score, text_score_rect)
+        self.__screen.blit(text_extra_Life, text_extra_life_rect)
+        self.__screen.blit(text_highscore, text_highscore_rect)
 
         pygame.display.update()
 
@@ -116,7 +128,8 @@ class SnakeGame:
                     Fire(self.__fires[random.randint(0, len(self.__fires) - 1)].get_random_nearby_position()))
             case 2 | 4 | 6 | 8 | 10:
                 if len(self.__fires) > 1:
-                    self.__fires.remove(self.__fires[random.randint(0, len(self.__fires) - 1)])
+                    self.__fires.remove(
+                        self.__fires[random.randint(0, len(self.__fires) - 1)])
             case 0:
                 self.__fires.append(Fire(random_position()))
 
