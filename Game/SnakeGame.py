@@ -1,9 +1,9 @@
 import sys
 
-from Fire import *
-from Food import Food
-from FoodType import FoodType, random_food_type
-from Snake import *
+from .Fire import *
+from .Food import Food
+from .FoodType import FoodType, random_food_type
+from .Snake import *
 
 
 def random_position():
@@ -18,9 +18,6 @@ class SnakeGame:
         self.__tick_speed = 5
         self.__is_paused = False
         self.__clock = pygame.time.Clock()
-        self.__screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-        self.__surface = pygame.Surface(self.__screen.get_size())
-        self.__surface = self.__surface.convert()
 
         self.__draw_grid(self.__surface)
         self.__number_of_devoured_foods = 0
@@ -50,19 +47,6 @@ class SnakeGame:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__quit_game()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    self.__snake.turn(Settings.up)
-                elif event.key == pygame.K_DOWN:
-                    self.__snake.turn(Settings.down)
-                elif event.key == pygame.K_LEFT:
-                    self.__snake.turn(Settings.left)
-                elif event.key == pygame.K_RIGHT:
-                    self.__snake.turn(Settings.right)
-                elif event.key == pygame.K_ESCAPE:
-                    self.__quit_game()
-                elif event.key == pygame.K_q:
-                    self.__is_paused = not self.__is_paused
 
     def __randomize_position_food(self):
         while True:

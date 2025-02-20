@@ -1,0 +1,3 @@
+RGBA_WHITE = (255, 255, 255)
+RGBA_GREY = (25, 25, 25)
+RGBA_Black = (0, 0, 0)

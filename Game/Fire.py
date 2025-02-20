@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from Settings import Settings
+from .Settings import Settings
 
 
 class Fire:
