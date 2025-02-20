@@ -30,7 +30,7 @@ class SnakeGame:
         self.__fires = [Fire(random_position()), Fire(random_position())]
 
         self.__my_font = pygame.font.SysFont("monospace", 16)
-        self.__my_font2 = pygame.font.SysFont("monospace", 16)
+        
 
     @staticmethod
     def __draw_grid(surface):
@@ -108,15 +108,25 @@ class SnakeGame:
             fire.draw(self.__surface)
 
     def __update_screen(self):
+        with open("highscore/HighscoreSave", "r") as file:
+            line = file.readline().strip()  
+            highscore = int(line.split(": ")[1]) 
+
         self.__screen.blit(self.__surface, (0, 0))
-        text = self.__my_font.render("Score: {0}".format(self.__snake.get_score()), True, (0, 0, 0))
-        text2 = self.__my_font.render("Extra Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
+        text_score = self.__my_font.render("Score: {0}".format(self.__snake.get_score()), True, (0, 0, 0))
+        text_extra_Life = self.__my_font.render("Extra Leben: {0}".format(self.__snake.get_life()), True, (0, 0, 0))
+        text_highscore = self.__my_font.render("Highscore: {0}".format(highscore), True, (0, 0, 0))
 
-        text_rect = text.get_rect(topleft=(10, 10))
-        text2_rect = text2.get_rect(topleft=(text_rect.right + 10, 10))
 
-        self.__screen.blit(text, text_rect)
-        self.__screen.blit(text2, text2_rect)
+        text_score_rect = text_score.get_rect(topleft=(10, 10))
+        text_extra_life_rect = text_extra_Life.get_rect(topleft=(text_score_rect.right + 10, 10))
+        text_highscore_rect = text_highscore.get_rect(topleft=(text_extra_life_rect.right + 10, 10))
+
+
+        self.__screen.blit(text_score, text_score_rect)
+        self.__screen.blit(text_extra_Life, text_extra_life_rect)
+        self.__screen.blit(text_highscore, text_highscore_rect)
+
 
         pygame.display.update()
 
