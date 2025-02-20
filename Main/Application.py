@@ -18,7 +18,7 @@ class Application:
 
             menu = Menu(self._surface, self._screen)
             menu.run()
-            self.running = menu.windowShouldClose()
+            self.running = not menu.windowShouldClose()
 
             if self.running:
                 pass # Game

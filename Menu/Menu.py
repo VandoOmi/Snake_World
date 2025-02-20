@@ -11,7 +11,7 @@ class Menu():
     def __init__(self, surface, screen):
         self.surface = surface
         self.screen = screen
-        self.shouldClose = False
+        self.shouldClose = True
         self.buttons = []
 
         pygame.font.init()
@@ -29,7 +29,7 @@ class Menu():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.__quit()
-                    self.shouldClose = False
+                    self.shouldClose = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for text, text_rect, option in self.buttons:
                     if text_rect.collidepoint(pygame.mouse.get_pos()):

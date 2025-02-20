@@ -1,10 +1,10 @@
 import sys
 
-from Difficulty import *
-from Fire import *
-from Food import Food
-from FoodType import FoodType, random_food_type
-from Snake import *
+from .Difficulty import *
+from .Fire import *
+from .Food import Food
+from .FoodType import FoodType, random_food_type
+from .Snake import *
 
 
 def random_position():

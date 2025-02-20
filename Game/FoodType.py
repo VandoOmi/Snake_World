@@ -1,6 +1,6 @@
 import random
 from enum import Enum
-from Difficulty import *
+from .Difficulty import *
 
 
 class FoodType(Enum):
