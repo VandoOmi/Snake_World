@@ -1,7 +1,7 @@
 import sys
 import pygame
 from Menu import Menu
-from Game.SnakeGame import *
+from Game import *
 
 class Application:
     
@@ -9,6 +9,8 @@ class Application:
         pygame.init()
 
         self._screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        Settings.screen_width, Settings.screen_height = self._screen.get_size()
+        Settings.grid_width, Settings.grid_height = Settings.screen_width // Settings.grid_size, Settings.screen_height // Settings.grid_size
         self._surface = pygame.Surface(self._screen.get_size())
         self._surface = self._surface.convert()
 

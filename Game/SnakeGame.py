@@ -55,6 +55,21 @@ class SnakeGame:
             if event.type == pygame.QUIT:
                 self.__quit()
                 self.shouldClose = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.__quit()
+                    self.shouldClose = True
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    self.__snake.turn(Settings.up)
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:    
+                    self.__snake.turn(Settings.down)
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    self.__snake.turn(Settings.left)
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    self.__snake.turn(Settings.right)
+                if event.key == pygame.K_q:
+                    self.__is_paused = not self.__is_paused
+                    
 
     def __randomize_position_food(self):
         while True:

@@ -3,9 +3,6 @@ from Main.Application import *
 from Utils.colors import *
 from Game.Settings import *
 
-SCREEN_WIDTH = 1960
-SCREEN_HEIGTH = 1080
-
 class Menu():
 
     def __init__(self, surface, screen):
@@ -57,7 +54,7 @@ class Menu():
         for i, option in enumerate(self.menu_options):
             color = RGBA_Black if i == self.selected_option else RGBA_GREY
             text = self.font.render(option, True, color)
-            text_rect = text.get_rect(center=(SCREEN_WIDTH//2,  SCREEN_HEIGTH//3 + i * 80))
+            text_rect = text.get_rect(center=(Settings.screen_width//2,  Settings.screen_height//3 + i * 80))
             self.buttons.append((text, text_rect, option))
         for text, text_rect, option in self.buttons:
             self.screen.blit(text,text_rect)
