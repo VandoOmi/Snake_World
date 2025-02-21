@@ -13,14 +13,20 @@ def random_position():
 
 
 class SnakeGame:
-    def __init__(self,difficulty):
+    def __init__(self, difficulty, surface, screen):
         pygame.init()
+
+        self.__screen = screen
+        self.__surface = surface
+        self.shouldClose = False
+
+        self.running = True
 
         self.__tick_speed = 5
         self.__is_paused = False
         self.__clock = pygame.time.Clock()
 
-        self.__draw_grid(self.__surface)
+        self.__draw_grid(surface)
         self.__number_of_devoured_foods = 0
         self.__snake = Snake()
 
@@ -33,8 +39,7 @@ class SnakeGame:
         self.__difficulty =Schwierigkeit (difficulty)
         self.__snake.set_max_life(difficulty.max_life)
 
-    @staticmethod
-    def __draw_grid(surface):
+    def __draw_grid(self, surface):
         for y in range(0, int(Settings.grid_height)):
             for x in range(0, int(Settings.grid_width)):
                 r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size),
@@ -42,15 +47,14 @@ class SnakeGame:
                 color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
                 pygame.draw.rect(surface, color, r)
 
-    @staticmethod
-    def __quit_game():
-        pygame.quit()
-        sys.exit()
+    def __quit(self):
+        self.running = False
 
     def __handle_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.__quit_game()
+                self.__quit()
+                self.shouldClose = True
 
     def __randomize_position_food(self):
         while True:
@@ -133,8 +137,10 @@ class SnakeGame:
             case 0:
                 self.__fires.append(Fire(random_position()))
 
-    def main_loop(self):
-        while True:
+    def run(self):
+        self.running = True
+
+        while self.running:
             self.__check_tick_amount()
             self.__clock.tick(self.__tick_speed)
             self.__handle_keys()
@@ -148,3 +154,6 @@ class SnakeGame:
 
                 self.__draw_objects()
                 self.__update_screen()
+
+    def windowShouldClose(self):
+        return self.shouldClose

@@ -11,7 +11,7 @@ class Menu():
     def __init__(self, surface, screen):
         self.surface = surface
         self.screen = screen
-        self.shouldClose = True
+        self.shouldClose = False
         self.buttons = []
 
         pygame.font.init()

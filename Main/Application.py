@@ -1,6 +1,7 @@
 import sys
 import pygame
 from Menu import Menu
+from Game.SnakeGame import *
 
 class Application:
     
@@ -17,11 +18,17 @@ class Application:
         while self.running:
 
             menu = Menu(self._surface, self._screen)
+            print("Menu wurde erstellt.")
             menu.run()
             self.running = not menu.windowShouldClose()
+            print(f"Menu setzt self.running auf: {self.running}")
 
             if self.running:
-                pass # Game
+                game = SnakeGame(Schwierigkeit.MITTEL, self._surface, self._screen)
+                print("Game wurde erstellt.")
+                game.run()
+                self.running = not game.windowShouldClose()
+                print(f"Game setzt self.running auf: {self.running}")
 
                 if self.running:
                     pass #GameOver
