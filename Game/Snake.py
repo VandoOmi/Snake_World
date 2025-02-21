@@ -3,7 +3,7 @@ import random
 import pygame
 from pygame import Color
 
-from .Settings import Settings
+from Utils import Settings
 
 
 class Snake:
@@ -29,14 +29,14 @@ class Snake:
                (head_pos[1] + (y * Settings.grid_size)) % Settings.screen_height)
         if len(self.__positions) > 2 and new in self.__positions[2:]:
             self.decrease_life()
-            if self.__life == 0:
-                self.reset()
-                return False
+            if self.__life <= 0:
+                return self.reset()
+                
         else:
             self.__positions.insert(0, new)
             if len(self.__positions) > self.__length:
                 self.__positions.pop()
-            return True
+            return False
 
     def decrease_life(self):
         if self.__life != 0:
@@ -60,6 +60,7 @@ class Snake:
 
     def reset(self):
         self.decrease_life()
+        if Settings.DEBUG_MODE: print(f"Snake resets. ({self.get_life()})")
         if self.__life <= 0:
             self.reset_length()
             self.__positions = [
@@ -67,6 +68,8 @@ class Snake:
             self.__direction = random.choice(Settings.directions)
             self.saveHighscore()
             self.reset_variables()
+            return True
+        return False
 
     def get_highscore(self):
         with open("highscore/HighscoreSave", "r") as file:
