@@ -1,3 +1,4 @@
+from .Colidable import *
 from Utils import Settings
 from Utils.colors import *
 
@@ -182,7 +183,6 @@ class SnakeGame:
             self._clock.tick(self._tick_speed)
             self._handle_keys()
             if not self._is_paused:
-                if Settings.DEBUG_MODE: print("GameLoop is not paused.")
                 self._draw_grid(self._surface)
                 madeMove = self._snake.move()
                 if madeMove or self.gameOverBool:
