@@ -5,9 +5,9 @@ from Utils.colors import *
 
 class GameOver:
     
-    def __init__(self, screen, surface):
+    def __init__(self, screen):
         self._screen = screen
-        self._surface = surface
+        self._surface = pygame.Surface(self._screen.get_size())
         self._shouldClose = False
         self.backToMenu = False
         self._running = True
@@ -58,7 +58,7 @@ class GameOver:
         self._screen.blit(self._surface, (0, 0))
         
         for i, option in enumerate(self.menu_options):
-            color = RGBA_Black if i == self.selected_option else RGBA_GREY
+            color = RGBA_BLACK if i == self.selected_option else RGBA_GREY
             text = self.font.render(option, True, color)
             text_rect = text.get_rect(center=(Settings.screen_width//2,  Settings.screen_height//3 + i * 80))
             self.buttons.append((text, text_rect, option))

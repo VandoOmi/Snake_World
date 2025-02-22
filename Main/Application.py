@@ -1,7 +1,8 @@
 import sys
 import pygame
 from Menu import Menu
-from Game import *
+from Game import Schwierigkeit
+from Game.SnakeGame import SnakeGame
 from Utils import Settings
 
 class Application:
@@ -11,23 +12,24 @@ class Application:
 
         self._screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         Settings.screen_width, Settings.screen_height = self._screen.get_size()
-        Settings.grid_width, Settings.grid_height = Settings.screen_width // Settings.grid_size, Settings.screen_height // Settings.grid_size
-        self._surface = pygame.Surface(self._screen.get_size())
-        self._surface = self._surface.convert()
+    
+        Settings.grid_width = Settings.screen_width / Settings.grid_size
+        Settings.grid_height = Settings.screen_height / Settings.grid_size
+
 
     def run(self):
         self.running = True
 
         while self.running:
 
-            menu = Menu(self._surface, self._screen)
+            menu = Menu(self._screen)
             if Settings.DEBUG_MODE: print("Menu wurde erstellt.")
             menu.run()
             self.running = not menu.windowShouldClose()
             if Settings.DEBUG_MODE: print(f"Menu setzt self.running auf: {self.running}")
 
             if self.running:
-                game = SnakeGame(Schwierigkeit.MITTEL, self._surface, self._screen)
+                game = SnakeGame(Schwierigkeit.MITTEL, self._screen)
                 if Settings.DEBUG_MODE: print("Game wurde erstellt.")
                 game.run()
                 self.running = not game.windowShouldClose()

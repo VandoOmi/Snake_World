@@ -1,27 +1,32 @@
-import sys
-
-from GameOver import *
 from Utils import Settings
+from Utils.colors import *
 
 from .Difficulty import *
 from .Fire import *
 from .Food import Food
 from .FoodType import FoodType, random_food_type
 from .Snake import *
+from GameOver import *
 
+map_width = 1600
+map_height = 600
 
 def random_position():
-    return (random.randint(0, int(Settings.grid_width) - 1) * Settings.grid_size,
-            random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
+    return (random.randint(0, int(map_width / Settings.grid_size) - 1) * Settings.grid_size,
+            random.randint(0, int(map_height / Settings.grid_size) - 1) * Settings.grid_size)
 
 
 class SnakeGame:
-    def __init__(self, difficulty, surface, screen):
-        pygame.init()
-
+    def __init__(self, difficulty, screen):        
         self._screen = screen
-        self._surface = surface
         self.shouldClose = False
+        
+        self._surface = pygame.Surface((map_width, map_height))
+        self._surface = self._surface.convert()
+        screen_x, screen_y = self._screen.get_size()
+        x_offset = (screen_x-map_width)//2
+        y_offset = (screen_y-map_height)//2
+        self._screen_offset = (x_offset, y_offset)
 
         self._running = True
         self._tick_speed = 5
@@ -29,18 +34,18 @@ class SnakeGame:
         self._clock = pygame.time.Clock()
         self.gameOverBool = False
 
-        self._draw_grid(surface)
-        self._number_of_devoured_foods = 0
+        self._draw_grid(self._surface)
+        
         self._snake = Snake()
 
-        self._foods = [Food(random_food_type(difficulty)), Food(
-            random_food_type(difficulty)), Food(random_food_type(difficulty))]
+        self._foods = [Food(random_food_type(difficulty), random_position()), Food(random_food_type(difficulty), random_position()), Food(random_food_type(difficulty), random_position())]
+        
         self._fires = [Fire(random_position()), Fire(random_position())]
 
         self._my_font = pygame.font.SysFont("monospace", 16)
         
-        self._difficulty =Schwierigkeit (difficulty)
-        self._snake.set_max_life(difficulty.max_life)
+        self._difficulty = Schwierigkeit(difficulty)
+        self._snake.set_max_life(self._difficulty.max_life)
         
     def _control_tick_amount(self):
         if self._tick_speed >= 50:
@@ -86,7 +91,6 @@ class SnakeGame:
             if self._snake.get_head_position() == food.get_position():
                 self._snake.increase_score(1)
                 self._tick_speed = self._tick_speed + self._difficulty.speed
-                self._number_of_devoured_foods += 1
                 if food.get_food_type() == FoodType.DOUBLE_UP:
                     self._snake.half_length()
                     self._tick_speed = self._tick_speed + self._difficulty.speed*3
@@ -97,8 +101,7 @@ class SnakeGame:
                 if food.get_food_type() == FoodType.NORMAL:
                     self._snake.increase_length()
                 self._foods.remove(food)
-                self._foods.append(Food(random_food_type(self._difficulty)))
-                food.set_position(self._randomize_position_food())
+                self._foods.append(Food(random_food_type(self._difficulty), self._randomize_position_food()))
 
     def _check_snake_fire_collision(self):
         for fire in self._fires:
@@ -142,7 +145,8 @@ class SnakeGame:
             fire.draw(self._surface)
 
     def _update_screen(self):
-        self._screen.blit(self._surface, (0, 0))
+        self._screen.fill(RGBA_WHITE)
+        self._screen.blit(self._surface, self._screen_offset)
         text_score = self._my_font.render("Score: {0}".format(
             self._snake.get_score()), True, (0, 0, 0))
         text_extra_Life = self._my_font.render(
@@ -167,7 +171,7 @@ class SnakeGame:
         self._screen.blit(text_highscore, text_highscore_rect)
         self._screen.blit(text_speed, text_speed_rect)
 
-        pygame.display.update()
+        pygame.display.flip()
 
     def run(self):
         self._running = True
@@ -184,7 +188,7 @@ class SnakeGame:
                 if madeMove or self.gameOverBool:
                     self.gameOverBool = False
                     self._tick_speed = 5
-                    gameOver = GameOver(self._screen, self._surface)
+                    gameOver = GameOver(self._screen)
                     gameOver.run()
                     self.shouldClose = gameOver.windowShouldClose()
                     if gameOver.shouldGoToMenu():

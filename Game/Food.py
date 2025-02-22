@@ -7,10 +7,9 @@ from Utils import Settings
 
 
 class Food:
-    def __init__(self, food_type):
-        self.__position = (0, 0)
+    def __init__(self, food_type, position):
+        self.__position = position
         self.__food_type = food_type
-        self.__randomize_position()
 
     def get_position(self):
         return self.__position
@@ -20,10 +19,6 @@ class Food:
 
     def set_position(self, pos):
         self.__position = pos
-
-    def __randomize_position(self):
-        self.__position = (random.randint(0, int(Settings.grid_width) - 1) * Settings.grid_size,
-                           random.randint(0, int(Settings.grid_height) - 1) * Settings.grid_size)
 
     def draw(self, surface):
         r = pygame.Rect((self.__position[0], self.__position[1]), (Settings.grid_size, Settings.grid_size))

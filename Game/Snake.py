@@ -1,16 +1,15 @@
 import random
 
 import pygame
-from pygame import Color
-
+from Game import SnakeGame
 from Utils import Settings
 
 
 class Snake:
     def __init__(self):
         self.__length = 1
-        self.__positions = [((Settings.screen_width / 2),
-                             (Settings.screen_height / 2))]
+        self.__positions = [((SnakeGame.map_width / 2),
+                             (SnakeGame.map_height / 2))]
         self.__direction = random.choice(Settings.directions)
         self.__color = (17, 24, 47)  # mit set_color() kann die geändert werden
         self.__score = 0
@@ -25,8 +24,8 @@ class Snake:
     def move(self):
         head_pos = self.get_head_position()
         x, y = self.__direction
-        new = (((head_pos[0] + (x * Settings.grid_size)) % Settings.screen_width),
-               (head_pos[1] + (y * Settings.grid_size)) % Settings.screen_height)
+        new = (((head_pos[0] + (x * Settings.grid_size)) % SnakeGame.map_width),
+               (head_pos[1] + (y * Settings.grid_size)) % SnakeGame.map_height)
         if len(self.__positions) > 2 and new in self.__positions[2:]:
             self.decrease_life()
             if self.__life <= 0:
@@ -42,8 +41,8 @@ class Snake:
         if self.__life != 0:
             self.__life -= 1
         self.__max_life -= 1
-        self.__positions = [((Settings.screen_width / 2),
-                             (Settings.screen_height / 2))]
+        self.__positions = [((SnakeGame.map_width / 2),
+                             (SnakeGame.map_height / 2))]
 
     def get_positions(self):
         return self.__positions
@@ -64,7 +63,7 @@ class Snake:
         if self.__life <= 0:
             self.reset_length()
             self.__positions = [
-                ((Settings.screen_width / 2), (Settings.screen_height / 2))]
+                ((SnakeGame.map_width / 2), (SnakeGame.map_height / 2))]
             self.__direction = random.choice(Settings.directions)
             self.saveHighscore()
             self.reset_variables()
