@@ -1,10 +1,10 @@
 import random
 
-from Game import Obstical
+from Game import Obstacle
 from Utils import Settings
 
 
-class Fire(Obstical):
+class Fire(Obstacle):
     def __init__(self, position):
         super().__init__(position, "Game/textures/fire_pixel_art.jpeg")
 

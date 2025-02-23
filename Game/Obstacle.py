@@ -1,7 +1,7 @@
 import pygame
 
 
-class Obstical:
+class Obstacle:
     
     def __init__(self, position, texture_path: str = None, color: tuple[int, int, int] = None):
         self._position = position

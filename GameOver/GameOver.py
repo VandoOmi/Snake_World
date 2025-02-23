@@ -51,7 +51,7 @@ class GameOver:
             for x in range(0, int(Settings.grid_width)):
                 r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size),
                                 (Settings.grid_size, Settings.grid_size))
-                color = (43, 166, 178) if (x + y) % 2 == 0 else (34, 144, 155)
+                color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
                 pygame.draw.rect(surface, color, r)
                 
     def _update_screen(self):
