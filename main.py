@@ -1,4 +1,4 @@
-from Main.Application import Application
+from Main import Application
 
 app = Application()
 app.run()

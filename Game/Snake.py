@@ -1,6 +1,6 @@
 import random
-
 import pygame
+
 from Game import SnakeGame
 from Utils import Settings
 
