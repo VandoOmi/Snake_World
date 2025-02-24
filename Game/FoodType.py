@@ -10,12 +10,9 @@ class FoodType(Enum):
 
 
 def random_food_type(difficulty):
-    x =random.randint(1,100)
-    if x <= difficulty.normal_food:
-        return FoodType.NORMAL
-    if x <= difficulty.extra_life_food:
-        return FoodType.EXTRA_LIFE
+    x = random.randint(1, 100)
     if x <= difficulty.blue_food:
         return FoodType.DOUBLE_UP
+    elif x <= difficulty.extra_life_food + difficulty.blue_food:
+        return FoodType.EXTRA_LIFE
     return FoodType.NORMAL
-
