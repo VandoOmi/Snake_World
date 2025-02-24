@@ -12,7 +12,7 @@ class GameOver:
         self.backToMenu = False
         self._running = True
         
-        self.buttons = []
+        self.buttons = {}
         
         pygame.font.init()
         
@@ -31,8 +31,8 @@ class GameOver:
                     self._quit()
                     self._shouldClose = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                for text, text_rect, option in self.buttons:
-                    if text_rect.collidepoint(pygame.mouse.get_pos()):
+                for option in self.buttons:
+                    if self.buttons[option][1].collidepoint(pygame.mouse.get_pos()):
                         self._handleOptions(option)
 
     def _handleOptions(self, option: str):
@@ -56,14 +56,20 @@ class GameOver:
                 
     def _update_screen(self):
         self._screen.blit(self._surface, (0, 0))
+        menu_surf = pygame.Surface((520, 400)).convert()
+        menu_surf.fill("white")
+        menu_surf.set_alpha(80)
+        menu_surf_rect = menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
+            
+        self._screen.blit(menu_surf, menu_surf_rect)
         
         for i, option in enumerate(self.menu_options):
             color = RGBA_BLACK if i == self.selected_option else RGBA_GREY
-            text = self.font.render(option, True, color)
-            text_rect = text.get_rect(center=(Settings.screen_width//2,  Settings.screen_height//3 + i * 80))
-            self.buttons.append((text, text_rect, option))
-        for text, text_rect, option in self.buttons:
-            self._screen.blit(text,text_rect)
+            text = self.font.render(option, False, (0, 0, 0))
+            text_rect = text.get_rect(center=(Settings.screen_width//2,  (Settings.screen_height-400)//2 + 100 + i * 100))
+            self.buttons[option] = (text, text_rect)
+        for text, rect in self.buttons.values():
+            self._screen.blit(text, rect)
 
         pygame.display.update()
     

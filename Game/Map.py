@@ -91,9 +91,15 @@ class Map:
     # map methodes
 
     def draw(self):
+<<<<<<< HEAD
 
         self._surface.blit(self._background,(0,0))
 
+=======
+        
+        self._surface.blit(self._background, (0, 0))
+        
+>>>>>>> origin/HEAD
         for obs in self._obstacles:
             obs.draw(self._surface)
 

@@ -57,7 +57,7 @@ class Menu:
         self._screen.blit(menu_surf, menu_surf_rect)
         
         for i, option in enumerate(self.menu_options):
-            #color = RGBA_BLACK if i == self.selected_option else RGBA_GREY
+            color = RGBA_BLACK if i == self.selected_option else RGBA_GREY
             text = self.font.render(option, False, (0, 0, 0))
             text_rect = text.get_rect(center=(Settings.screen_width//2,  (Settings.screen_height-400)//2 + 100 + i * 100))
             self.buttons[option] = (text, text_rect)
