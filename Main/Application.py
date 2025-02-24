@@ -30,7 +30,7 @@ class Application:
             if Settings.DEBUG_MODE: print(f"Menu setzt self.running auf: {self.running}")
 
             if self.running:
-                game = SnakeGame(Schwierigkeit.MITTEL, self._screen)
+                game = SnakeGame(Schwierigkeit.SCHWER, self._screen)
                 if Settings.DEBUG_MODE: print("Game wurde erstellt.")
                 game.run()
                 self.running = not game.windowShouldClose()
