@@ -4,6 +4,7 @@ from Menu import Menu
 from Game import Schwierigkeit
 from Game.SnakeGame import SnakeGame
 from Utils import Settings
+from Utils import Config
 
 class Application:
     

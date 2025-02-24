@@ -1,6 +1,7 @@
 import pygame
 from Utils import Settings
 from Utils.colors import *
+from Utils.config import *
 
 class Menu:
 
@@ -8,6 +9,8 @@ class Menu:
         self._surface = pygame.Surface(screen.get_size())
         self._screen = screen
         self._shouldClose = False
+
+        self.config = Config()
         
         self.buttons = {}
 
