@@ -90,7 +90,7 @@ class Map:
         
     def draw(self):
         
-        self._surface.blit(self._background)
+        self._surface.blit(self._background, (0, 0))
         
         for obs in self._obstacles:
             obs.draw(self._surface)
