@@ -1,0 +1,22 @@
+{
+    "Standard": {
+        "width": 1200,
+        "height": 1000,
+        "main_color": [93, 216, 228],
+        "sec_color": [84, 194, 205],
+        "collidables": [
+        ],
+        "obsitical": [
+        ]
+    },
+    "High": {
+        "width": 600,
+        "height": 1000,
+        "main_color": [93, 216, 228],
+        "sec_color": [84, 194, 205],
+        "collidables": [
+        ],
+        "obsitical": [
+        ]
+    }
+}
