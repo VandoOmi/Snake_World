@@ -6,16 +6,17 @@ from Utils import Settings
 
 
 class Snake:
-    def __init__(self):
+    def __init__(self,difficulty, color=(17, 47, 17)):
         self.__length = 1
         self.__positions = [((SnakeGame.map_width / 2),
                              (SnakeGame.map_height / 2))]
         self.__direction = random.choice(Settings.directions)
-        self.__color = (17, 24, 47)  # mit set_color() kann die geändert werden
         self.__score = 0
         self.__life = 0
         self.__max_life = 0
-        self.__temp_max_life =0
+        self.__temp_max_life = 0
+        self.__color = (17, 47, 17)
+        self.__difficulty = difficulty
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -30,7 +31,7 @@ class Snake:
             self.decrease_life()
             if self.__life <= 0:
                 return self.reset()
-                
+
         else:
             self.__positions.insert(0, new)
             if len(self.__positions) > self.__length:
@@ -50,16 +51,17 @@ class Snake:
     def get_head_position(self):
         return self.__positions[0]
 
-    def set_color(self, new_color):
-        self.color = new_color
+    def set_color(self, color):
+        self.__color = color
 
     def set_max_life(self, max_life):
         self.__max_life = max_life
-        self.__temp_max_life =max_life
+        self.__temp_max_life = max_life
 
     def reset(self):
         self.decrease_life()
-        if Settings.DEBUG_MODE: print(f"Snake resets. ({self.get_life()})")
+        if Settings.DEBUG_MODE:
+            print(f"Snake resets. ({self.get_life()})")
         if self.__life <= 0:
             self.reset_length()
             self.__positions = [
@@ -72,22 +74,35 @@ class Snake:
 
     def get_highscore(self):
         with open("highscore/HighscoreSave", "r") as file:
-            line = file.readline().strip()
-            highscore = int(line.split(": ")[1])
+            for line in file:
+                    if ':' in line and f"highscore_{self.__difficulty.name}" in line:
+                        highscore = int(line.split(':', 1)[1].strip())
+                        break
         return highscore
 
     def saveHighscore(self):
-        if self.get_score() > self.get_highscore():
-            with open("highscore/HighscoreSave", "w") as file:
-                file.write(f"highscore: {self.get_score()}")
+        with open("highscore/HighscoreSave", "r") as datei:
+            lines = datei.readlines()  
+        highscore_updated = False
+        for i, line in enumerate(lines):
+            if ':' in line and f"highscore_{self.__difficulty.name}" in line:
+                current_highscore = int(line.split(":")[1].strip()) 
+                if self.get_score() > current_highscore:
+                    lines[i] = f"highscore_{self.__difficulty.name}: {self.get_score()}\n" 
+                    highscore_updated = True
+                    break
+        if highscore_updated:
+            with open("highscore/HighscoreSave", "w") as datei:
+                datei.writelines(lines) 
+
 
     def reset_variables(self):
         self.__score = 0
-        self.__max_life=self.__temp_max_life
+        self.__max_life = self.__temp_max_life
         self.__life = 0
 
-    def increase_length(self):
-        self.__length += 1
+    def increase_length(self, value=1):
+        self.__length += value
 
     def half_length(self):
         self.__length = (self.__length - self.__length // 10) / 2

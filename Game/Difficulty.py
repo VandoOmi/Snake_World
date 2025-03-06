@@ -2,16 +2,21 @@ from enum import Enum
 
 
 class Schwierigkeit(Enum):
-    LEICHT = (float(0.25), int(5), float(50), float(40), float(10))
-    MITTEL = (float(0.75), int(3), float(50), float(25), float(25))
-    SCHWER = (float(1), int(1),  float(10),float (25), float(65))
+    LEICHT = ("leicht", float(0.25), int(5), float(50), float(40), float(10))
+    MITTEL = ("mittel", float(0.75), int(3), float(50), float(25), float(25))
+    SCHWER = ("schwer", float(1), int(1),  float(10), float(25), float(65))
 
-    def __init__(self, speed, max_life, normal_food, extra_life_food, blue_food):
+    def __init__(self, name, speed, max_life, normal_food, extra_life_food, blue_food):
+        self._name = name
         self._speed = speed
         self._max_life = max_life
         self._normal_food = normal_food
         self._extra_life_food = extra_life_food
         self._blue_food = blue_food
+
+    @property
+    def name(self):
+        return self._name
 
     @property
     def speed(self):
@@ -31,4 +36,4 @@ class Schwierigkeit(Enum):
 
     @property
     def blue_food(self):
-        return  self._blue_food
+        return self._blue_food

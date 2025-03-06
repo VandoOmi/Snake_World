@@ -1,9 +1,14 @@
 {
     "Settings": {
         "framerate": 60,
-        "snake_color": [0, 0, 0]
+        "snake_color": [
+            0,
+            0,
+            0
+        ]
     },
     "config": {
         "debug_mode": true
-    }
+    },
+    "Difficulty": "LEICHT"
 }

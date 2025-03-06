@@ -3,6 +3,7 @@ import pygame
 from Menu import Menu
 from Game import Schwierigkeit
 from Game.SnakeGame import SnakeGame
+from Menu.Einstllungen import Einstellungen
 from Utils import Settings
 from Utils import Config
 
@@ -28,9 +29,9 @@ class Application:
             menu.run()
             self.running = not menu.windowShouldClose()
             if Settings.DEBUG_MODE: print(f"Menu setzt self.running auf: {self.running}")
-
+            
             if self.running:
-                game = SnakeGame(Schwierigkeit.SCHWER, self._screen)
+                game = SnakeGame( self._screen)
                 if Settings.DEBUG_MODE: print("Game wurde erstellt.")
                 game.run()
                 self.running = not game.windowShouldClose()
