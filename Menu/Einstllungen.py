@@ -1,6 +1,5 @@
 import pygame
 
-from Menu.ColorChooser import ColorChooser
 from Utils import Config, Settings
 from Utils.colors import RGBA_BLACK, RGBA_GREY
 
@@ -13,12 +12,13 @@ class Einstellungen:
         self._shouldClose = False
 
         self.config = Config()
-        
-        self._init_menu()
-        
-    def _init_menu(self):
+
         self.buttons = {}
+
+        pygame.font.init()
+
         self.font = pygame.font.SysFont("monospace", 50, True)
+
         self.menu_options = ["Schwer", "Mittel", "Leicht", "Zurück"]
         self.selected_option = 0
 
@@ -46,16 +46,17 @@ class Einstellungen:
 
     def _handleOptions(self, option: str):
         match option.lower():
-            case "Schwer":
+            case "schwer":
                 self.config.set_Value("Difficulty", "SCHWER")
                 self._quit()
-            case "Mittel":
+            case "mittel":
                 self.config.set_Value("Difficulty", "MITTEL")
                 self._quit()
-            case "Leicht":
+            case "leicht":
                 self.config.set_Value("Difficulty", "LEICHT")
                 self._quit()
-            case "Zurück":
+                
+            case "zurück":
                 self._quit()
 
 
