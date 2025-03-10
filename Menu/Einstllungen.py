@@ -13,14 +13,13 @@ class Einstellungen:
         self._shouldClose = False
 
         self.config = Config()
-
+        
+        self._init_menu()
+        
+    def _init_menu(self):
         self.buttons = {}
-
-        pygame.font.init()
-
         self.font = pygame.font.SysFont("monospace", 50, True)
-
-        self.menu_options = ["Schwer", "Mittel", "Leicht","Zurück"]
+        self.menu_options = ["Schwer", "Mittel", "Leicht", "Zurück"]
         self.selected_option = 0
 
     def _handleEvents(self):

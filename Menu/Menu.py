@@ -9,18 +9,19 @@ from Utils.config import *
 class Menu:
 
     def __init__(self, screen: pygame.Surface):
-        self._surface = pygame.Surface(screen.get_size())
         self._screen = screen
         self._shouldClose = False
+        self._surface = pygame.Surface(screen.get_size())
+        
         self._isEinstellungenOffen = False
+        
         self.config = Config()
 
+        self._init_menu() #Init MenuOptions and Font
+        
+    def _init_menu(self):
         self.buttons = {}
-
-        pygame.font.init()
-
         self.font = pygame.font.SysFont("monospace", 50, True)
-
         self.menu_options = ["Start", "Einstellungen","Farb Wahl", "Beenden"]
         self.selected_option = 0
 
@@ -50,7 +51,7 @@ class Menu:
                 ein.run()
                 if ein.windowShouldClose():
                     self._shouldClose = True
-                self._isSettingsOpen = False
+                self._isEinstellungenOffen = False
             case "Farb Wahl":
                 c =ColorChooser()
                 c.run()

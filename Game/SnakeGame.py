@@ -1,5 +1,6 @@
 import random
 import Game
+
 from Game.FoodType import random_food_type  # function
 from Utils.Settings import *
 from Utils.colors import *
@@ -16,42 +17,50 @@ def random_position():
 
 class SnakeGame:
     def __init__(self, screen,color = (17, 24, 47)):
-        from Game import Map
         self._screen = screen
         self.shouldClose = False
-
+        
+        self._init_surface()
+        self._init_map()
+        self._init_run()
+        self._init_config()
+        self._init_snake(color)
+        
+        self._my_font = pygame.font.SysFont("monospace", 16)
+        
+    def _init_config(self):
+        from Utils.config import Config
+        self._config = Config()
+        self._difficulty = self._config.get_Difficulty()
+        
+        
+    def _init_snake(self, color):
+        self._snake = Game.Snake(self._difficulty)
+        self._snake.set_max_life(self._difficulty.max_life)
+        self._snake.set_color(color)
+        
+        
+    def _init_surface(self):
         self._surface = pygame.Surface((map_width, map_height)).convert()
-
         self._screen_offset = self._init_screen_offset()
-
+        
+    def _init_run(self):
         self._running = True
         self._tick_speed = 5
         self._is_paused = False
         self._clock = pygame.time.Clock()
         self.gameOverBool = False
 
-        self._my_font = pygame.font.SysFont("monospace", 16)
-
-        from Utils.config import Config
-        self._config = Config()
-        self._difficulty = self._config.get_Difficulty()
-
-        self._map = Map(self._surface)
-        self._init_map()
-
-        self._snake = Game.Snake(self._difficulty)
-
-        self._snake.set_max_life(self._difficulty.max_life)
-        self._snake.set_color(color)
-
-    def _terminate_map(self):
-        self._map.delete_all()
-
     def _init_map(self):
+        from Game import Map
+        self._map = Map(self._surface)
         self._map.add_Obstacles(
             [Game.Fire(random_position()), Game.Fire(random_position())])
         self._map.add_Foods([Game.Food(random_food_type(self._difficulty), random_position()), Game.Food(random_food_type(
             self._difficulty), random_position()), Game.Food(random_food_type(self._difficulty), random_position())])
+        
+    def _terminate_map(self):
+        self._map.delete_all()
 
     def _init_screen_offset(self):
         screen_x, screen_y = self._screen.get_size()
@@ -108,8 +117,7 @@ class SnakeGame:
                 if food.get_food_type() == Game.FoodType.NORMAL:
                     self._snake.increase_length()
                 self._map.remove_Food(food)
-                self._map.add_Food(Game.Food(random_food_type(
-                    self._difficulty), self._randomize_position_food()))
+                self._map.add_Food(Game.Food(random_food_type(self._difficulty), self._randomize_position_food()))
 
     def _check_snake_fire_collision(self):
         fires = self._map.get_Fires()

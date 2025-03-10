@@ -1,11 +1,8 @@
 import sys
 import pygame
-from Menu import Map_Select, Menu
-from Game import Schwierigkeit
+from Menu import Menu
 from Game.SnakeGame import SnakeGame
-from Menu.Einstllungen import Einstellungen
 from Utils import Settings
-from Utils import Config
 
 class Application:
     
