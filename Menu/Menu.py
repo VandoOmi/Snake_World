@@ -1,4 +1,5 @@
 import pygame
+from Menu.ColorChooser import ColorChooser
 from Menu.Einstllungen import Einstellungen
 from Utils import Settings
 from Utils.colors import *
@@ -20,7 +21,7 @@ class Menu:
 
         self.font = pygame.font.SysFont("monospace", 50, True)
 
-        self.menu_options = ["Start", "Einstellungen", "Beenden"]
+        self.menu_options = ["Start", "Einstellungen","Farb Wahl", "Beenden"]
         self.selected_option = 0
 
     def _handleEvents(self):
@@ -50,6 +51,9 @@ class Menu:
                 if ein.windowShouldClose():
                     self._shouldClose = True
                 self._isSettingsOpen = False
+            case "Farb Wahl":
+                c =ColorChooser()
+                c.run()
             case "Beenden":
                 self._quit()
                 self._shouldClose = True
