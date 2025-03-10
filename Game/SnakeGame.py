@@ -14,7 +14,7 @@ def random_position():
 
 
 class SnakeGame:
-    def __init__(self, screen,color = (17, 24, 47)):
+    def __init__(self, difficulty, screen, color = (17, 24, 47)):
         from Game import Map
         self._screen = screen
         self.shouldClose = False
