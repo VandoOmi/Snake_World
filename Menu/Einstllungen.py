@@ -58,7 +58,7 @@ class Einstellungen:
                 self._quit()
             case "Farbe Wahl":
                 colorChooser =ColorChooser()
-                colorChooser.run
+                colorChooser.run()
             case "zurück":
                 self._quit()
 

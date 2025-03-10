@@ -5,8 +5,9 @@ from Utils.Settings import *
 from Utils.colors import *
 from GameOver import *
 
-map_width = 1200
-map_height = 800
+map_width = 1600
+map_height = 600
+
 
 def random_position():
     return (random.randint(0, int(map_width / Settings.grid_size) - 1) * Settings.grid_size,
@@ -14,11 +15,13 @@ def random_position():
 
 
 class SnakeGame:
-    def __init__(self, difficulty, screen, color = (17, 24, 47)):
+    def __init__(self, screen,color = (17, 24, 47)):
         from Game import Map
         self._screen = screen
         self.shouldClose = False
-        
+
+        self._surface = pygame.Surface((map_width, map_height)).convert()
+
         self._screen_offset = self._init_screen_offset()
 
         self._running = True
@@ -28,11 +31,11 @@ class SnakeGame:
         self.gameOverBool = False
 
         self._my_font = pygame.font.SysFont("monospace", 16)
-        
-        self._difficulty = Game.Schwierigkeit(difficulty)
 
-        self._surface = pygame.Surface((map_width, map_height)).convert()
-        
+        from Utils.config import Config
+        self._config = Config()
+        self._difficulty = self._config.get_Difficulty()
+
         self._map = Map(self._surface)
         self._init_map()
 

@@ -9,7 +9,7 @@ class ColorChooser:
         pygame.display.set_caption("Pygame Color Chooser")
 
         self.font = pygame.font.Font(None, 36)
-        self.color = [255, 255, 255]  # Startfarbe (Weiß)
+        self.color = [255, 255, 255]
 
     def draw_slider(self, x, y, value, label):
         pygame.draw.rect(self.screen, (200, 200, 200), (x, y, 256, 20))
