@@ -1,7 +1,9 @@
 import pygame
+from Menu.Einstllungen import Einstellungen
 from Utils import Settings
 from Utils.colors import *
 from Utils.config import *
+
 
 class Menu:
 
@@ -9,9 +11,9 @@ class Menu:
         self._surface = pygame.Surface(screen.get_size())
         self._screen = screen
         self._shouldClose = False
-
+        self._isEinstellungenOffen = False
         self.config = Config()
-        
+
         self.buttons = {}
 
         pygame.font.init()
@@ -36,9 +38,18 @@ class Menu:
                         self._handleOptions(option)
 
     def _handleOptions(self, option: str):
+        if self._isEinstellungenOffen:
+            return
         match(option):
             case "Start":
                 self._quit()
+            case "Einstellungen":
+                self._isEinstellungenOffen = True
+                ein = Einstellungen(self._screen)
+                ein.run()
+                if ein.windowShouldClose():
+                    self._shouldClose = True
+                self._isSettingsOpen = False
             case "Beenden":
                 self._quit()
                 self._shouldClose = True
@@ -46,7 +57,8 @@ class Menu:
     def _draw_background(self, surface):
         for y in range(0, int(Settings.grid_height)):
             for x in range(0, int(Settings.grid_width)):
-                r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size), (Settings.grid_size, Settings.grid_size))
+                r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size),
+                                (Settings.grid_size, Settings.grid_size))
                 color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
                 pygame.draw.rect(surface, color, r)
 
@@ -55,19 +67,24 @@ class Menu:
         menu_surf = pygame.Surface((520, 400)).convert()
         menu_surf.fill("white")
         menu_surf.set_alpha(80)
-        menu_surf_rect = menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
-            
+        menu_surf_rect = menu_surf.get_rect(
+            center=(Settings.screen_width//2, Settings.screen_height//2))
+
         self._screen.blit(menu_surf, menu_surf_rect)
-        
+
         for i, option in enumerate(self.menu_options):
             color = RGBA_BLACK if i == self.selected_option else RGBA_GREY
             text = self.font.render(option, False, (0, 0, 0))
-            text_rect = text.get_rect(center=(Settings.screen_width//2,  (Settings.screen_height-400)//2 + 100 + i * 100))
+            text_rect = text.get_rect(center=(
+                Settings.screen_width//2,  (Settings.screen_height-400)//2 + 100 + i * 100))
             self.buttons[option] = (text, text_rect)
         for text, rect in self.buttons.values():
             self._screen.blit(text, rect)
 
         pygame.display.update()
+
+    def get_difficulty(self):
+        return self.config.get_Difficulty()
 
     def run(self):
         self.running = True
@@ -79,8 +96,6 @@ class Menu:
             self._draw_background(self._surface)
 
             self._update_screen()
-        
-
 
     def _quit(self):
         self.running = False

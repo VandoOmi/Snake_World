@@ -3,6 +3,7 @@ import pygame
 from Menu import Map_Select, Menu
 from Game import Schwierigkeit
 from Game.SnakeGame import SnakeGame
+from Menu.Einstllungen import Einstellungen
 from Utils import Settings
 from Utils import Config
 
@@ -28,19 +29,13 @@ class Application:
             menu.run()
             self.running = not menu.windowShouldClose()
             if Settings.DEBUG_MODE: print(f"Menu setzt self.running auf: {self.running}")
+            
             if self.running:
-                select = Map_Select(self._screen)
-                if Settings.DEBUG_MODE: print("Map_Select wurde erstellt.")
-                select.run()
-                self.running = not select.windowShouldClose()
-                if Settings.DEBUG_MODE: print(f"Map_Select setzt self.running auf: {self.running}")
-
-                if self.running:
-                    game = SnakeGame(Schwierigkeit.SCHWER, self._screen)
-                    if Settings.DEBUG_MODE: print("Game wurde erstellt.")
-                    game.run()
-                    self.running = not game.windowShouldClose()
-                    if Settings.DEBUG_MODE: print(f"Game setzt self.running auf: {self.running}")
+                game = SnakeGame( self._screen)
+                if Settings.DEBUG_MODE: print("Game wurde erstellt.")
+                game.run()
+                self.running = not game.windowShouldClose()
+                if Settings.DEBUG_MODE: print(f"Game setzt self.running auf: {self.running}")
 
     def quit(self):
         self.running = False
