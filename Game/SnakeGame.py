@@ -21,9 +21,9 @@ class SnakeGame:
         self.shouldClose = False
         
         self._init_surface()
+        self._init_config()
         self._init_map()
         self._init_run()
-        self._init_config()
         self._init_snake(color)
         
         self._my_font = pygame.font.SysFont("monospace", 16)
