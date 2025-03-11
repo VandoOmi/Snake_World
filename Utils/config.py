@@ -6,7 +6,10 @@ from Game.Difficulty import Schwierigkeit
 class Config:
 
     def __init__(self):
-        file = open("Utils/config.json", "r+")
+        self.update()
+        
+    def update(self):
+        file = open("Utils/config.json", "r")
         self.config_dict = json.load(file)
         file.close()
 
@@ -21,9 +24,9 @@ class Config:
         file.write(json.dump(self.config_dict))
         file.close()
     
-    def close(self,closes):
+    def close(self):
         with open("Utils/config.json", "w") as file:
-            json.dump(self.config_dict, file, indent=4)
+            json.dump(self.config_dict, file, indent=4) 
 
 
     def get_Difficulty(self):
@@ -33,3 +36,12 @@ class Config:
             return Schwierigkeit(Schwierigkeit.LEICHT)
         else:
             return Schwierigkeit(Schwierigkeit.MITTEL)
+        
+    def get_highscore(self):
+        highscore = self.get_Value("highscore")
+        return highscore[self.get_Difficulty().name]
+    
+    def set_highscore(self, value: int):
+        highscore = self.get_Value("highscore")
+        highscore[self.get_Difficulty().name] = max(value,highscore[self.get_Difficulty().name])
+        

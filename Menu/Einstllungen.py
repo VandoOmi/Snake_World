@@ -106,7 +106,7 @@ class Einstellungen:
 
     def _quit(self):
         self._running = False
-        self.config.close(True)
+        self.config.close()
 
     def windowShouldClose(self) -> bool:
         return self._shouldClose

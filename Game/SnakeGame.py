@@ -152,8 +152,7 @@ class SnakeGame:
             self._snake.get_score()), True, (0, 0, 0))
         text_extra_Life = self._my_font.render(
             "Extra Leben: {0}".format(self._snake.get_life()), True, (0, 0, 0))
-        text_highscore = self._my_font.render("Highscore: {0}".format(
-            self._snake.get_highscore()), True, (0, 0, 0))
+        text_highscore = self._my_font.render(f"Highscore: {self._config.get_highscore()}", True, (0, 0, 0))
         if Settings.DEBUG_MODE:
             text_speed = self._my_font.render(
                 f"Speed: {self._tick_speed}", True, (0, 0, 0))
@@ -181,6 +180,7 @@ class SnakeGame:
         if Settings.DEBUG_MODE:
             print("GameLoop started.")
         while self._running:
+            self._config.update()
             self._control_tick_amount()
             self._clock.tick(self._tick_speed)
             self._handle_keys()

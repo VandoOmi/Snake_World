@@ -10,5 +10,10 @@
     "config": {
         "debug_mode": true
     },
-    "Difficulty": "LEICHT"
+    "Difficulty": "SCHWER",
+    "highscore": {
+        "SCHWER": 10,
+        "MITTEL": 0,
+        "LEICHT": 40
+    }
 }

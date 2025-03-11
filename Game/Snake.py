@@ -7,6 +7,7 @@ from Utils import Settings
 
 class Snake:
     def __init__(self,difficulty, color=(17, 47, 17)):
+        from Utils.config import Config
         self.__length = 1
         self.__positions = [((SnakeGame.map_width / 2),
                              (SnakeGame.map_height / 2))]
@@ -17,6 +18,7 @@ class Snake:
         self.__temp_max_life = 0
         self.__color = (17, 47, 17)
         self.__difficulty = difficulty
+        self._config = Config()
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -72,28 +74,9 @@ class Snake:
             return True
         return False
 
-    def get_highscore(self):
-        with open("highscore/HighscoreSave", "r") as file:
-            for line in file:
-                    if ':' in line and f"highscore_{self.__difficulty.name}" in line:
-                        highscore = int(line.split(':', 1)[1].strip())
-                        break
-        return highscore
-
     def saveHighscore(self):
-        with open("highscore/HighscoreSave", "r") as datei:
-            lines = datei.readlines()  
-        highscore_updated = False
-        for i, line in enumerate(lines):
-            if ':' in line and f"highscore_{self.__difficulty.name}" in line:
-                current_highscore = int(line.split(":")[1].strip()) 
-                if self.get_score() > current_highscore:
-                    lines[i] = f"highscore_{self.__difficulty.name}: {self.get_score()}\n" 
-                    highscore_updated = True
-                    break
-        if highscore_updated:
-            with open("highscore/HighscoreSave", "w") as datei:
-                datei.writelines(lines) 
+        self._config.set_highscore(self.get_score())
+        self._config.close()
 
 
     def reset_variables(self):
