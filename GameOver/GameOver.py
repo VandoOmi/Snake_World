@@ -16,9 +16,9 @@ class GameOver:
         
         pygame.font.init()
         
-        self.font = pygame.font.SysFont("monospace", 50)
+        self.font = pygame.font.SysFont("monospace", 50, True)
         
-        self.menu_options = ["Nochmal versuchen", "Zum Menu", "Beenden"]
+        self.menu_options = ["Neuer Versuch", "Zum Menu", "Beenden"]
         self.selected_option = 0
         
     def _handleEvents(self):
@@ -30,6 +30,12 @@ class GameOver:
                 if event.key == pygame.K_ESCAPE:
                     self._quit()
                     self._shouldClose = True
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    self.selected_option = (self.selected_option + 1)
+                elif event.key == pygame.K_UP or event.key == pygame.K_w:
+                    self.selected_option = (self.selected_option - 1)
+                elif event.key == pygame.K_RETURN:
+                    self._handleOptions(self.menu_options[self.selected_option])
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for option in self.buttons:
                     if self.buttons[option][1].collidepoint(pygame.mouse.get_pos()):
@@ -37,7 +43,7 @@ class GameOver:
 
     def _handleOptions(self, option: str):
         match(option):
-            case "Nochmal versuchen":
+            case "Neuer Versuch":
                 self._quit()
             case "Zum Menu":
                 self._quit()
@@ -56,20 +62,30 @@ class GameOver:
                 
     def _update_screen(self):
         self._screen.blit(self._surface, (0, 0))
-        menu_surf = pygame.Surface((520, 400)).convert()
-        menu_surf.fill("white")
-        menu_surf.set_alpha(80)
-        menu_surf_rect = menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
-            
-        self._screen.blit(menu_surf, menu_surf_rect)
         
+        back_menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
+        back_menu_surf.fill("white")
+        back_menu_surf.set_alpha(100)
+        menu_surf_rect = back_menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
+        
+        
+        self._screen.blit(back_menu_surf, menu_surf_rect)
+        
+        menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
+        menu_surf.fill("white")
+        menu_surf.set_colorkey('white')
+        menu_surf_rect = menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
+
+
         for i, option in enumerate(self.menu_options):
-            color = RGBA_BLACK if i == self.selected_option else RGBA_GREY
-            text = self.font.render(option, False, (0, 0, 0))
-            text_rect = text.get_rect(center=(Settings.screen_width//2,  (Settings.screen_height-400)//2 + 100 + i * 100))
+            color = 'black' if i == self.selected_option else (75, 75, 75)
+            text = self.font.render(option, False, color)
+            text_rect = text.get_rect(center=(520//2,  100 + i * 100))
             self.buttons[option] = (text, text_rect)
         for text, rect in self.buttons.values():
-            self._screen.blit(text, rect)
+            menu_surf.blit(text, rect)
+            
+        self._screen.blit(menu_surf, menu_surf_rect)
 
         pygame.display.update()
     
