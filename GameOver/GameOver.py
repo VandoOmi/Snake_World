@@ -63,11 +63,11 @@ class GameOver:
                 pygame.draw.rect(surface, color, r)  
                   
     def _build_info_box(self):
-        self.back_info_box = pygame.Surface((520, 60 + (60*len(self.infos)))).convert()
+        self.back_info_box = pygame.Surface((520, 120)).convert()
         self.back_info_box.fill('white')
         self.back_info_box.set_alpha(100)
         
-        self.info_box = pygame.Surface((520, 60 + (60*len(self.infos)))).convert()
+        self.info_box = pygame.Surface((520, 180)).convert()
         self.info_box.fill('white')
         self.info_box.set_colorkey('white')
         

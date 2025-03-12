@@ -35,7 +35,7 @@ class SnakeGame:
         
         
     def _init_snake(self, color):
-        self._snake = Game.Snake(self._difficulty)
+        self._snake = Game.Snake()
         self._snake.set_max_life(self._difficulty.max_life)
         self._snake.set_color(color)
         
@@ -53,7 +53,19 @@ class SnakeGame:
 
     def _init_map(self):
         from Game import Map
-        self._map = Map(self._surface)
+        self.snake_color = self._config.get_Value("color")
+        self.primary_map_color = (
+            255 - self.snake_color[0],
+            255 - self.snake_color[1],
+            255 - self.snake_color[2]
+        ) 
+        self.secoundary_map_color = (
+            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
+            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
+            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20
+        )
+        
+        self._map = Map(self._surface,(tuple(self.primary_map_color), self.secoundary_map_color))
         self._map.add_Obstacles(
             [Game.Fire(random_position()), Game.Fire(random_position())])
         self._map.add_Foods([Game.Food(random_food_type(self._difficulty), random_position()), Game.Food(random_food_type(

@@ -75,6 +75,7 @@ class Menu:
                 pygame.draw.rect(surface, color, r)
 
     def _build_info_box(self):
+        self.config.update()
         self.back_info_box = pygame.Surface((520, 180)).convert()
         self.back_info_box.fill('white')
         self.back_info_box.set_alpha(100)
@@ -97,6 +98,22 @@ class Menu:
         
         self.info_box.blit(highscore, highscore_rect)
         self.info_box.blit(schwierigkeit, schwierigkeit_rect)
+        
+    def _build_color_box(self):
+        self.back_color_box = pygame.Surface((520, 180)).convert()
+        self.back_color_box.fill('white')
+        self.back_color_box.set_alpha(100)
+        
+        self.color_box = pygame.Surface((520, 180)).convert()
+        self.color_box.fill('white')
+        self.color_box.set_colorkey('white')
+        
+        
+        self.color_bex_rect = self.color_box.get_rect()
+        self.color_bex_rect.left = self.menu_surf_rect.right
+        self.color_bex_rect.centery = Settings.screen_height//2
+        
+        
                 
     def _update_screen(self):
         self._screen.blit(self._surface, (0, 0))
@@ -106,9 +123,11 @@ class Menu:
         back_menu_surf.set_alpha(100)
         self.menu_surf_rect = back_menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
         self._build_info_box()
+        self._build_color_box()
         
         self._screen.blit(back_menu_surf, self.menu_surf_rect)
         self._screen.blit(self.back_info_box, self.info_bex_rect)
+        self._screen.blit(self.back_color_box, self.color_bex_rect)
         
         menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
         menu_surf.fill("white")
@@ -124,6 +143,7 @@ class Menu:
             
         self._screen.blit(menu_surf, self.menu_surf_rect)
         self._screen.blit(self.info_box, self.info_bex_rect)
+        self._screen.blit(self.color_box, self.color_bex_rect)
 
         pygame.display.update()
 

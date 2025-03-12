@@ -7,14 +7,11 @@ from Utils import Settings
 
 class Map:
 
-    def __init__(self,
-                 surface: pygame.Surface,
-                 background_colors: tuple = ((93, 216, 228), (84, 194, 205))):
+    def __init__(self, surface: pygame.Surface, background_colors: tuple = ((93, 216, 228), (84, 194, 205))):
 
         self._surface: pygame.Surface = surface
 
-        self._background: pygame.Surface = pygame.Surface(
-            self._surface.get_size())
+        self._background: pygame.Surface = pygame.Surface(self._surface.get_size())
         self._build_background(background_colors)
 
         self._obstacles: list[Obstacle] = []

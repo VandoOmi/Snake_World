@@ -1,19 +1,13 @@
 {
-    "Settings": {
-        "framerate": 60,
-        "snake_color": [
-            0,
-            0,
-            0
-        ]
-    },
-    "config": {
-        "debug_mode": true
-    },
-    "Difficulty": "SCHWER",
+    "Difficulty": "MITTEL",
     "highscore": {
         "SCHWER": 10,
-        "MITTEL": 0,
+        "MITTEL": 17,
         "LEICHT": 40
-    }
+    },
+    "color": [
+        255,
+        255,
+        0
+    ]
 }

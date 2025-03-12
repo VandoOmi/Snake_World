@@ -15,9 +15,9 @@ class Einstellungen:
 
         self.buttons = {}
 
-        pygame.font.init()
-
-        self.font = pygame.font.SysFont("monospace", 50, True)
+        
+        self.menu_font = pygame.font.SysFont("monospace", 50, True)
+        self.info_font = pygame.font.SysFont("monospace", 30, True)
 
         self.menu_options = ["Schwer", "Mittel", "Leicht", "Zurück"]
         self.selected_option = 0
@@ -67,34 +67,56 @@ class Einstellungen:
                 color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
                 pygame.draw.rect(surface, color, r)
 
+    def _build_info_box(self):
+        self.config.update()
+        self.back_info_box = pygame.Surface((520, 180)).convert()
+        self.back_info_box.fill('white')
+        self.back_info_box.set_alpha(100)
+        
+        self.info_box = pygame.Surface((520, 180)).convert()
+        self.info_box.fill('white')
+        self.info_box.set_colorkey('white')
+        
+        self.info_bex_rect = self.info_box.get_rect()
+        self.info_bex_rect.right = self.menu_surf_rect.left
+        self.info_bex_rect.centery = Settings.screen_height//2
+        
+        text_color = (80, 80, 80)
+        
+        schwierigkeit = self.info_font.render(f"Schwierigkeit: {self.config.get_Difficulty().name}", False, text_color)
+        schwierigkeit_rect = schwierigkeit.get_rect(center=(520//2, 90))
+        
+        self.info_box.blit(schwierigkeit, schwierigkeit_rect)
+                
     def _update_screen(self):
         self._screen.blit(self._surface, (0, 0))
         
         back_menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
         back_menu_surf.fill("white")
         back_menu_surf.set_alpha(100)
-        menu_surf_rect = back_menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
+        self.menu_surf_rect = back_menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
+        self._build_info_box()
         
-        
-        self._screen.blit(back_menu_surf, menu_surf_rect)
+        self._screen.blit(back_menu_surf, self.menu_surf_rect)
+        self._screen.blit(self.back_info_box, self.info_bex_rect)
         
         menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
         menu_surf.fill("white")
         menu_surf.set_colorkey('white')
-        menu_surf_rect = menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
-
 
         for i, option in enumerate(self.menu_options):
-            color = 'black' if i == self.selected_option else (75, 75, 75)
-            text = self.font.render(option, False, color)
+            color = 'black' if i == self.selected_option else (100, 100, 100)
+            text = self.menu_font.render(option, False, color)
             text_rect = text.get_rect(center=(520//2,  100 + i * 100))
             self.buttons[option] = (text, text_rect)
         for text, rect in self.buttons.values():
             menu_surf.blit(text, rect)
             
-        self._screen.blit(menu_surf, menu_surf_rect)
+        self._screen.blit(menu_surf, self.menu_surf_rect)
+        self._screen.blit(self.info_box, self.info_bex_rect)
 
         pygame.display.update()
+
 
     def run(self):
         self._running = True
