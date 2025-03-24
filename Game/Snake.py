@@ -12,6 +12,8 @@ class Snake:
         self.__positions = [((SnakeGame.map_width / 2),
                              (SnakeGame.map_height / 2))]
         self.__direction = random.choice(Settings.directions)
+        self._speed = 0.1 #SPEEEEEEEEEEDDDDDDDDDD
+        self._step = 0
         self.__score = 0
         self.__life = 0
         self.__max_life = 0
@@ -24,20 +26,23 @@ class Snake:
             self.__direction = new_direction
 
     def move(self):
-        head_pos = self.get_head_position()
-        x, y = self.__direction
-        new = (((head_pos[0] + (x * Settings.grid_size)) % SnakeGame.map_width),
-               (head_pos[1] + (y * Settings.grid_size)) % SnakeGame.map_height)
-        if len(self.__positions) > 2 and new in self.__positions[2:]:
-            self.decrease_life()
-            if self.__life <= 0:
-                return self.reset()
+        self._step += self._speed
+        if self._step >= 1:
+            self._step -= 1
+            head_pos = self.get_head_position()
+            x, y = self.__direction
+            new = (((head_pos[0] + (x * Settings.grid_size)) % SnakeGame.map_width),
+                    (head_pos[1] + (y * Settings.grid_size)) % SnakeGame.map_height)
+            if len(self.__positions) > 2 and new in self.__positions[2:]:
+                self.decrease_life()
+                if self.__life <= 0:
+                    return self.reset()
 
-        else:
-            self.__positions.insert(0, new)
-            if len(self.__positions) > self.__length:
-                self.__positions.pop()
-            return False
+            else:
+                self.__positions.insert(0, new)
+                if len(self.__positions) > self.__length:
+                    self.__positions.pop()
+                return True
 
     def decrease_life(self):
         if self.__life != 0:
@@ -61,8 +66,6 @@ class Snake:
 
     def reset(self):
         self.decrease_life()
-        if Settings.DEBUG_MODE:
-            print(f"Snake resets. ({self.get_life()})")
         if self.__life <= 0:
             self.reset_length()
             self.__positions = [
@@ -70,8 +73,8 @@ class Snake:
             self.__direction = random.choice(Settings.directions)
             self.saveHighscore()
             self.reset_variables()
-            return True
-        return False
+            return False
+        return True
 
     def saveHighscore(self):
         self._config.set_highscore(self.get_score())

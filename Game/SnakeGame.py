@@ -1,5 +1,7 @@
 import random
+import time
 import Game
+import pygame
 
 from Game.FoodType import random_food_type  # function
 from Utils.Settings import *
@@ -185,38 +187,50 @@ class SnakeGame:
         self._screen.blit(text_speed, text_speed_rect)
 
         pygame.display.flip()
+        
+    def _gameover(self):
+        self.gameOverBool = False
+        gameOver = GameOver(self._screen)
+        gameOver.run()
+        self.shouldClose = gameOver.windowShouldClose()
+        if gameOver.shouldGoToMenu():
+            self._quit()
+            self.gameOverBool = False
+        gameOver = None
+        if self.shouldClose:
+            self._quit()
+        self._terminate_map()
+        self._init_map()
 
     def run(self):
         self._running = True
 
         if Settings.DEBUG_MODE:
             print("GameLoop started.")
+        t_old = time.time()
+        t_tick = 1/60
+        t_acc = 0
+        
         while self._running:
-            self._config.update()
-            self._control_tick_amount()
-            self._clock.tick(self._tick_speed)
-            self._handle_keys()
-            if not self._is_paused:
-                madeMove = self._snake.move()
-                if madeMove or self.gameOverBool:
-                    self.gameOverBool = False
-                    self._tick_speed = 5
-                    gameOver = GameOver(self._screen)
-                    gameOver.run()
-                    self.shouldClose = gameOver.windowShouldClose()
-                    if gameOver.shouldGoToMenu():
-                        self._quit()
-                        self.gameOverBool = False
-                    gameOver = None
-                    if self.shouldClose:
-                        self._quit()
-                    self._terminate_map()
-                    self._init_map()
-                else:
-                    self._map.draw()
-                    self._check_conditions()
-                    self._draw_objects()
-                    self._update_screen()
+            t_delta = time.time() - t_old
+            t_old += t_delta
+            t_acc += t_delta
+            
+            while t_acc > t_tick:
+            
+                self._config.update()
+                self._handle_keys()
+                if not self._is_paused:
+                    
+                    if self.gameOverBool:
+                        self._gameover()
+                    elif self._snake.move():
+                        self._check_conditions()
+                t_acc -= t_tick
+                  
+            self._map.draw()
+            self._draw_objects()
+            self._update_screen()
 
     def windowShouldClose(self):
         return self.shouldClose
