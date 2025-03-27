@@ -2,9 +2,10 @@ from enum import Enum
 
 
 class Schwierigkeit(Enum):
-    LEICHT = ("LEICHT", float(0.25), int(5), float(50), float(40), float(10))
-    MITTEL = ("MITTEL", float(0.75), int(3), float(50), float(25), float(25))
-    SCHWER = ("SCHWER", float(1), int(1),  float(10), float(25), float(65))
+    #          Name,    Speed,    Max_Life,    Normal,  Extra Life, Blue_Food
+    LEICHT = ("LEICHT", float(1.25), int(5), float(50), float(40), float(10))
+    MITTEL = ("MITTEL", float(1.75), int(3), float(50), float(25), float(25))
+    SCHWER = ("SCHWER", float(2), int(1),  float(35), float(0), float(65))
 
     def __init__(self, name, speed, max_life, normal_food, extra_life_food, blue_food):
         self._name = name

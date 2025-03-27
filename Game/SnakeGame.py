@@ -123,13 +123,14 @@ class SnakeGame:
                         self._snake.half_length()
                     else:
                         self._snake.increase_length(2)
-                    self._tick_speed = self._tick_speed + self._difficulty.speed*3
+                    self._snake.increase_speed(self._difficulty.speed)
                 if food.get_food_type() == Game.FoodType.EXTRA_LIFE:
                     self._snake.increase_life()
                     self._snake.increase_length()
-                    self._tick_speed = self._tick_speed + self._difficulty.speed
+                    self._snake.increase_speed(self._difficulty.speed)
                 if food.get_food_type() == Game.FoodType.NORMAL:
                     self._snake.increase_length()
+                    self._snake.increase_speed(self._difficulty.speed)
                 self._map.remove_Food(food)
                 self._map.add_Food(Game.Food(random_food_type(self._difficulty), self._randomize_position_food()))
 

@@ -63,6 +63,9 @@ class Snake:
     def set_max_life(self, max_life):
         self.__max_life = max_life
         self.__temp_max_life = max_life
+    
+    def increase_speed(self, value):
+        self._speed *= value
 
     def reset(self):
         self.decrease_life()
