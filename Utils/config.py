@@ -45,3 +45,7 @@ class Config:
         highscore = self.get_Value("highscore")
         highscore[self.get_Difficulty().name] = max(value,highscore[self.get_Difficulty().name])
         
+    def set_color(self, rot: int, gruen: int, blau: int):
+        self.config_dict["color"] = [rot, gruen, blau]
+        self.close()
+

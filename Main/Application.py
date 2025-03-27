@@ -9,7 +9,7 @@ class Application:
     def __init__(self):
         pygame.init()
 
-        self._screen = pygame.display.set_mode((1400, 1400))
+        self._screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         Settings.screen_width, Settings.screen_height = self._screen.get_size()
     
         Settings.grid_width = Settings.screen_width / Settings.grid_size
