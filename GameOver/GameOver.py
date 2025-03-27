@@ -33,9 +33,17 @@ class GameOver:
                     self._quit()
                     self._shouldClose = True
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    self.selected_option = (self.selected_option + 1)
+                    # um wieder oben zu starten
+                    if self.selected_option >= len(self.menu_options) - 1:
+                        self.selected_option = 0
+                    else:
+                        self.selected_option = (self.selected_option + 1)
+                        # um wieder unten zu starten
                 elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                    self.selected_option = (self.selected_option - 1)
+                    if self.selected_option <= 0:
+                        self.selected_option = len(self.menu_options) - 1
+                    else:
+                        self.selected_option = (self.selected_option - 1)
                 elif event.key == pygame.K_RETURN:
                     self._handleOptions(self.menu_options[self.selected_option])
             elif event.type == pygame.MOUSEBUTTONDOWN:
