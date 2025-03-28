@@ -35,12 +35,9 @@ class SnakeGame:
         self._config = Config()
         self._difficulty = self._config.get_Difficulty()
         
-        
     def _init_snake(self, color):
         self._snake = Game.Snake()
-        self._snake.set_max_life(self._difficulty.max_life)
-        
-        
+        self._snake.set_max_life(self._difficulty.max_life) 
         
     def _init_surface(self):
         self._surface = pygame.Surface((map_width, map_height)).convert()
