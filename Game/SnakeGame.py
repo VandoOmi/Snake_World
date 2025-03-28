@@ -130,6 +130,7 @@ class SnakeGame:
                 self._snake._speed += self._difficulty.speed
                 if food.get_food_type() == Game.FoodType.NORMAL:
                     self._snake.increase_length()
+                    self._snake.increase_speed(self._difficulty.speed)
                 self._map.remove_Food(food)
                 self._map.add_Food(Game.Food(random_food_type(self._difficulty), self._randomize_position_food()))
 
