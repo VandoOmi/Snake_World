@@ -18,31 +18,31 @@ def random_position():
 
 
 class SnakeGame:
-    def __init__(self, screen,color = (17, 24, 47)):
+    def __init__(self, screen, color=(17, 24, 47)):
         self._screen = screen
         self.shouldClose = False
-        
+
         self._init_surface()
         self._init_config()
         self._init_map()
         self._init_run()
         self._init_snake(color)
-        
+
         self._my_font = pygame.font.SysFont("monospace", 16)
-        
+
     def _init_config(self):
         from Utils.config import Config
         self._config = Config()
         self._difficulty = self._config.get_Difficulty()
-        
+
     def _init_snake(self, color):
         self._snake = Game.Snake()
-        self._snake.set_max_life(self._difficulty.max_life) 
-        
+        self._snake.set_max_life(self._difficulty.max_life)
+
     def _init_surface(self):
         self._surface = pygame.Surface((map_width, map_height)).convert()
         self._screen_offset = self._init_screen_offset()
-        
+
     def _init_run(self):
         self._running = True
         self._is_paused = False
@@ -56,19 +56,23 @@ class SnakeGame:
             255 - self.snake_color[0],
             255 - self.snake_color[1],
             255 - self.snake_color[2]
-        ) 
-        self.secoundary_map_color = (
-            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
-            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
-            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20
         )
-        
-        self._map = Map(self._surface,(tuple(self.primary_map_color), self.secoundary_map_color))
+        self.secoundary_map_color = (
+            self.primary_map_color[0] - 20 if self.primary_map_color[0] -
+            20 >= 0 else self.primary_map_color[0] + 20,
+            self.primary_map_color[0] - 20 if self.primary_map_color[0] -
+            20 >= 0 else self.primary_map_color[0] + 20,
+            self.primary_map_color[0] - 20 if self.primary_map_color[0] -
+            20 >= 0 else self.primary_map_color[0] + 20
+        )
+
+        self._map = Map(self._surface, (tuple(
+            self.primary_map_color), self.secoundary_map_color))
         self._map.add_Obstacles(
             [Game.Fire(random_position()), Game.Fire(random_position())])
         self._map.add_Foods([Game.Food(random_food_type(self._difficulty), random_position()), Game.Food(random_food_type(
             self._difficulty), random_position()), Game.Food(random_food_type(self._difficulty), random_position())])
-        
+
     def _terminate_map(self):
         self._map.delete_all()
 
@@ -124,7 +128,8 @@ class SnakeGame:
                     print(self._difficulty.speed)
                     self._snake._speed += self._difficulty.speed
                 self._map.remove_Food(food)
-                self._map.add_Food(Game.Food(random_food_type(self._difficulty), self._randomize_position_food()))
+                self._map.add_Food(Game.Food(random_food_type(
+                    self._difficulty), self._randomize_position_food()))
 
     def _check_snake_fire_collision(self):
         fires = self._map.get_Fires()
@@ -159,7 +164,8 @@ class SnakeGame:
             self._snake.get_score()), True, (0, 0, 0))
         text_extra_Life = self._my_font.render(
             "Leben: {0}".format(self._snake.get_life()), True, (0, 0, 0))
-        text_highscore = self._my_font.render(f"Highscore: {self._config.get_highscore()}", True, (0, 0, 0))
+        text_highscore = self._my_font.render(
+            f"Highscore: {self._config.get_highscore()}", True, (0, 0, 0))
         if Settings.DEBUG_MODE:
             text_speed = self._my_font.render(
                 f"Speed: {self._snake._speed}", True, (0, 0, 0))
@@ -181,7 +187,7 @@ class SnakeGame:
             self._screen.blit(text_speed, text_speed_rect)
 
         pygame.display.flip()
-        
+
     def _gameover(self):
         self.gameOverBool = False
         gameOver = GameOver(self._screen)
@@ -204,24 +210,24 @@ class SnakeGame:
         t_old = time.time()
         t_tick = 1/60
         t_acc = 0
-        
+
         while self._running:
             t_delta = time.time() - t_old
             t_old += t_delta
             t_acc += t_delta
-            
+
             while t_acc > t_tick:
-                
+
                 self._config.update()
                 self._handle_keys()
                 if not self._is_paused:
-                    
+
                     if self.gameOverBool:
                         self._gameover()
                     elif self._snake.move():
                         self._check_conditions()
                 t_acc -= t_tick
-                  
+
             self._map.draw()
             self._draw_objects()
             self._update_screen()

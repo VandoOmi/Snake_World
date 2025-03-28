@@ -1,4 +1,3 @@
-from .Colidable import Colidable
 from .Difficulty import Schwierigkeit
 from .Obstacle import Obstacle
 from .Fire import Fire
@@ -8,4 +7,5 @@ from .Map import Map
 from .Snake import Snake
 from .SnakeGame import SnakeGame
 
-__all__ = [Colidable, Schwierigkeit, Obstacle, Fire, Food, FoodType, Map, Snake, SnakeGame]
+__all__ = [Schwierigkeit, Obstacle,
+           Fire, Food, FoodType, Map, Snake, SnakeGame]

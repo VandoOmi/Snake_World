@@ -15,7 +15,6 @@ class Einstellungen:
 
         self.buttons = {}
 
-        
         self.menu_font = pygame.font.SysFont("monospace", 50, True)
         self.info_font = pygame.font.SysFont("monospace", 30, True)
 
@@ -33,11 +32,14 @@ class Einstellungen:
                     self._quit()
                     self._shouldClose = True
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    self.selected_option = ((self.selected_option + 1) % len(self.menu_options))
+                    self.selected_option = (
+                        (self.selected_option + 1) % len(self.menu_options))
                 elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                    self.selected_option = ((self.selected_option - 1) % len(self.menu_options))
+                    self.selected_option = (
+                        (self.selected_option - 1) % len(self.menu_options))
                 elif event.key == pygame.K_RETURN:
-                    self._handleOptions(self.menu_options[self.selected_option])
+                    self._handleOptions(
+                        self.menu_options[self.selected_option])
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 for option in self.buttons:
                     if self.buttons[option][1].collidepoint(pygame.mouse.get_pos()):
@@ -57,8 +59,6 @@ class Einstellungen:
             case "Zurück":
                 self._quit()
 
-
-
     def _draw_background(self, surface):
         for y in range(0, int(Settings.grid_height)):
             for x in range(0, int(Settings.grid_width)):
@@ -72,35 +72,39 @@ class Einstellungen:
         self.back_info_box = pygame.Surface((520, 180)).convert()
         self.back_info_box.fill('white')
         self.back_info_box.set_alpha(100)
-        
+
         self.info_box = pygame.Surface((520, 180)).convert()
         self.info_box.fill('white')
         self.info_box.set_colorkey('white')
-        
+
         self.info_bex_rect = self.info_box.get_rect()
         self.info_bex_rect.right = self.menu_surf_rect.left
         self.info_bex_rect.centery = Settings.screen_height//2
-        
+
         text_color = (80, 80, 80)
-        
-        schwierigkeit = self.info_font.render(f"Schwierigkeit: {self.config.get_Difficulty().name}", False, text_color)
+
+        schwierigkeit = self.info_font.render(
+            f"Schwierigkeit: {self.config.get_Difficulty().name}", False, text_color)
         schwierigkeit_rect = schwierigkeit.get_rect(center=(520//2, 90))
-        
+
         self.info_box.blit(schwierigkeit, schwierigkeit_rect)
-                
+
     def _update_screen(self):
         self._screen.blit(self._surface, (0, 0))
-        
-        back_menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
+
+        back_menu_surf = pygame.Surface(
+            (520, 100 + (100*len(self.menu_options)))).convert()
         back_menu_surf.fill("white")
         back_menu_surf.set_alpha(100)
-        self.menu_surf_rect = back_menu_surf.get_rect(center=(Settings.screen_width//2, Settings.screen_height//2))
+        self.menu_surf_rect = back_menu_surf.get_rect(
+            center=(Settings.screen_width//2, Settings.screen_height//2))
         self._build_info_box()
-        
+
         self._screen.blit(back_menu_surf, self.menu_surf_rect)
         self._screen.blit(self.back_info_box, self.info_bex_rect)
-        
-        menu_surf = pygame.Surface((520, 100 + (100*len(self.menu_options)))).convert()
+
+        menu_surf = pygame.Surface(
+            (520, 100 + (100*len(self.menu_options)))).convert()
         menu_surf.fill("white")
         menu_surf.set_colorkey('white')
 
@@ -111,12 +115,11 @@ class Einstellungen:
             self.buttons[option] = (text, text_rect)
         for text, rect in self.buttons.values():
             menu_surf.blit(text, rect)
-            
+
         self._screen.blit(menu_surf, self.menu_surf_rect)
         self._screen.blit(self.info_box, self.info_bex_rect)
 
         pygame.display.update()
-
 
     def run(self):
         self._running = True
@@ -132,4 +135,3 @@ class Einstellungen:
 
     def windowShouldClose(self) -> bool:
         return self._shouldClose
-    

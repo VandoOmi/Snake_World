@@ -12,14 +12,13 @@ class Snake:
         self.__positions = [((SnakeGame.map_width / 2),
                              (SnakeGame.map_height / 2))]
         self.__direction = random.choice(Settings.directions)
-        self._speed = 0.1 
+        self._speed = 0.1
         self._step = 0
         self.__score = 0
         self.__life = 1
         self.__max_life = 0
         self.__temp_max_life = 0
         self._config = Config()
-        
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -32,7 +31,7 @@ class Snake:
             head_pos = self.get_head_position()
             x, y = self.__direction
             new = (((head_pos[0] + (x * Settings.grid_size)) % SnakeGame.map_width),
-                    (head_pos[1] + (y * Settings.grid_size)) % SnakeGame.map_height)
+                   (head_pos[1] + (y * Settings.grid_size)) % SnakeGame.map_height)
             if len(self.__positions) > 2 and new in self.__positions[2:]:
                 self.decrease_life()
                 if self.__life <= 0:
@@ -57,7 +56,6 @@ class Snake:
     def get_head_position(self):
         return self.__positions[0]
 
-
     def set_max_life(self, max_life):
         self.__max_life = max_life
         self.__temp_max_life = max_life
@@ -77,7 +75,6 @@ class Snake:
     def saveHighscore(self):
         self._config.set_highscore(self.get_score())
         self._config.close()
-
 
     def reset_variables(self):
         self.__score = 0
