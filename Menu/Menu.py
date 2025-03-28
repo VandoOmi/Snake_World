@@ -86,6 +86,7 @@ class Menu:
                 
                 color = self.primary_map_color if (x + y) % 2 == 0 else self.secoundary_map_color
                 pygame.draw.rect(surface, color, r)
+                
     def _init_map(self):
         from Game import Map
         self.snake_color = self.config.get_Value("color")
@@ -99,7 +100,6 @@ class Menu:
             self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
             self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20
         )
-        
         
     def _build_info_box(self):
         self.config.update()
@@ -139,8 +139,6 @@ class Menu:
         
         self.color_bex_rect.left = self.menu_surf_rect.right
         self.color_bex_rect.centery = Settings.screen_height // 2
-
-        
 
     def _update_screen(self):
         self._screen.blit(self._surface, (0, 0))

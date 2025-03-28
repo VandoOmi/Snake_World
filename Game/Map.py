@@ -1,7 +1,7 @@
 import random
 import pygame
 
-from Game import Colidable, Fire, Food, Obstacle
+from Game import Fire, Food, Obstacle
 from Utils import Settings
 
 
@@ -15,7 +15,6 @@ class Map:
         self._build_background(background_colors)
 
         self._obstacles: list[Obstacle] = []
-        self._colidables: list[Colidable] = []
         self._food: list[Food] = []
 
     # food methodes
@@ -44,9 +43,6 @@ class Map:
         for obs in obsList:
             self._obstacles.append(obs)
 
-    def remove_Obstacle(self, obs: Obstacle):
-        self._obstacles.remove(obs)
-
     def remove_random_Obstacle(self):
         if len(self._obstacles) > 1:
             random_obstacle = self._obstacles[random.randint(
@@ -72,19 +68,6 @@ class Map:
             if isinstance(obs, Fire):
                 fires.append(obs)
         return fires
-
-    # coliable methodes
-
-    def add_Colidable(self, col: Colidable):
-        self._obstacles.append(col)
-
-    def add_Colidables(self, colList: list[Colidable]):
-        for col in colList:
-            self._obstacles.append(col)
-
-    def remove_Colidable(self, col: Colidable):
-        self._obstacles.remove(col)
-
     # map methodes
 
     def draw(self):
@@ -93,9 +76,6 @@ class Map:
 
         for obs in self._obstacles:
             obs.draw(self._surface)
-
-        for col in self._colidables:
-            col.draw(self._surface)
 
         for food in self._food:
             food.draw(self._surface)
@@ -117,5 +97,4 @@ class Map:
 
     def delete_all(self):
         self._obstacles = []
-        self._colidables = []
         self._food = []

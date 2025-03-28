@@ -17,9 +17,6 @@ class Food:
     def get_food_type(self):
         return self.__food_type
 
-    def set_position(self, pos):
-        self.__position = pos
-
     def draw(self, surface):
         r = pygame.Rect((self.__position[0], self.__position[1]), (Settings.grid_size, Settings.grid_size))
         pygame.draw.rect(surface, (255, 0, 0), r)
