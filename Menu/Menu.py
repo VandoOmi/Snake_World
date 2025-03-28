@@ -22,9 +22,9 @@ class Menu:
         self._init_map()
         
         c = self.config.get_Value("color")
-        self.slider_rot = Slider(pygame.Rect(1220, 450, 400, 20), c[0])
-        self.slider_gruen = Slider(pygame.Rect(1220, 480, 400, 20), c[1])
-        self.slider_blau = Slider(pygame.Rect(1220, 510, 400, 20), c[2])
+        self.r_slider = Slider(pygame.Rect(1220, 450, 400, 20), c[0])
+        self.g_slider = Slider(pygame.Rect(1220, 480, 400, 20), c[1])
+        self.b_slider = Slider(pygame.Rect(1220, 510, 400, 20), c[2])
 
 
     def _init_menu(self):
@@ -176,53 +176,58 @@ class Menu:
 
         pygame.display.update()
 
+    def _postion_slider(self, padding, height):
+        # Positioniere die Slider in der color_bex_rect
+        self.r_slider.rect.x = self.color_bex_rect.x + padding  
+        self.r_slider.rect.y = self.color_bex_rect.y + padding  
+
+        self.g_slider.rect.x = self.color_bex_rect.x + padding  
+        self.g_slider.rect.y = self.color_bex_rect.y + padding + height  
+
+        self.b_slider.rect.x = self.color_bex_rect.x + padding  
+        self.b_slider.rect.y = self.color_bex_rect.y + padding + 2 * height  
     def _update_sliders(self):
         
         slider_padding = 10  # Abstand zwischen den Slidern und der Farbauswahlbox
         slider_height = 60  # Höhe des Sliders, falls benötigt für visuelle Anpassung
 
-        # Positioniere die Slider in der color_bex_rect
-        self.slider_rot.rect.x = self.color_bex_rect.x + slider_padding  
-        self.slider_rot.rect.y = self.color_bex_rect.y + slider_padding  
+        self._postion_slider(slider_padding,slider_height)
+        self._draw_slider(slider_padding, slider_height)  
+        self._slider_text()
 
-        self.slider_gruen.rect.x = self.color_bex_rect.x + slider_padding  
-        self.slider_gruen.rect.y = self.color_bex_rect.y + slider_padding + slider_height  
+        self.config.set_color(self.r_slider.value(), self.g_slider.value(), self.b_slider.value())
+        self._init_map()
 
-        self.slider_blau.rect.x = self.color_bex_rect.x + slider_padding  
-        self.slider_blau.rect.y = self.color_bex_rect.y + slider_padding + 2 * slider_height  
-
-        # Slider zeichnen und aktualisieren
-        self.slider_rot.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed()) 
-        self.slider_rot.draw(self._screen)  
-        self.slider_rot.set_y_position(self.color_bex_rect.y + slider_padding) 
-
-        self.slider_gruen.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed()) 
-        self.slider_gruen.draw(self._screen) 
-        self.slider_gruen.set_y_position(self.color_bex_rect.y + slider_padding + slider_height)  
-
-        self.slider_blau.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed())  
-        self.slider_blau.draw(self._screen) 
-        self.slider_blau.set_y_position(self.color_bex_rect.y + slider_padding + 2 * slider_height)  
-
-        
+    def _slider_text(self):
         # Text für die Slider
         slider_label_font = pygame.font.SysFont("monospace", 20, True)
         text_color = (0, 0, 0)  
 
         # Rot: Name + Wert anzeigen
-        rot_text = slider_label_font.render(f"Rot:{self.slider_rot.get_value()}", True, text_color)
-        self._screen.blit(rot_text, (self.slider_rot.rect.right + 10, self.slider_rot.rect.centery - rot_text.get_height() // 2))
+        rot_text = slider_label_font.render(f"Rot:{self.r_slider.value()}", True, text_color)
+        self._screen.blit(rot_text, (self.r_slider.rect.right + 10, self.r_slider.rect.centery - rot_text.get_height() // 2))
 
         # Grün: Name + Wert anzeigen
-        gruen_text = slider_label_font.render(f"Grün:{self.slider_gruen.get_value()}", True, text_color)
-        self._screen.blit(gruen_text, (self.slider_gruen.rect.right + 10, self.slider_gruen.rect.centery - gruen_text.get_height() // 2))
+        gruen_text = slider_label_font.render(f"Grün:{self.g_slider.value()}", True, text_color)
+        self._screen.blit(gruen_text, (self.g_slider.rect.right + 10, self.g_slider.rect.centery - gruen_text.get_height() // 2))
 
         # Blau: Name + Wert anzeigen
-        blau_text = slider_label_font.render(f"Blau:{self.slider_blau.get_value()}", True, text_color)
-        self._screen.blit(blau_text, (self.slider_blau.rect.right + 10, self.slider_blau.rect.centery - blau_text.get_height() // 2))
+        blau_text = slider_label_font.render(f"Blau:{self.b_slider.value()}", True, text_color)
+        self._screen.blit(blau_text, (self.b_slider.rect.right + 10, self.b_slider.rect.centery - blau_text.get_height() // 2))
 
-        self.config.set_color(self.slider_rot.get_value(), self.slider_gruen.get_value(), self.slider_blau.get_value())
-        self._init_map()
+    def _draw_slider(self, padding, height):
+        # Slider zeichnen und aktualisieren
+        self.r_slider.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed()) 
+        self.r_slider.draw(self._screen)  
+        self.r_slider.set_y_position(self.color_bex_rect.y + padding) 
+
+        self.g_slider.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed()) 
+        self.g_slider.draw(self._screen) 
+        self.g_slider.set_y_position(self.color_bex_rect.y + padding + height)  
+
+        self.b_slider.update(pygame.mouse.get_pos(), pygame.mouse.get_pressed())  
+        self.b_slider.draw(self._screen) 
+        self.b_slider.set_y_position(self.color_bex_rect.y + padding + 2 * height)
 
     def get_difficulty(self):
         return self.config.get_Difficulty()

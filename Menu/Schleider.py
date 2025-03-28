@@ -36,9 +36,9 @@ class Slider:
         else:
             self.dragging = False
 
-    def get_value(self):
+    def value(self):
         return self.value
 
     # Positioniere den Schieberegler auf der Y-Achse
-    def set_y_position(self, y_position):
-        self.slider_rect.y = y_position
+    def set_y_position(self, y):
+        self.slider_rect.y = y
