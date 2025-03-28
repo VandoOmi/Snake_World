@@ -19,7 +19,7 @@ class Snake:
         self.__max_life = 0
         self.__temp_max_life = 0
         self._config = Config()
-        self.__color = self._config.get_Value('color')
+        
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -58,8 +58,6 @@ class Snake:
     def get_head_position(self):
         return self.__positions[0]
 
-    def set_color(self, color):
-        self.__color = color
 
     def set_max_life(self, max_life):
         self.__max_life = max_life
