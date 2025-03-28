@@ -33,9 +33,9 @@ class Einstellungen:
                     self._quit()
                     self._shouldClose = True
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                    self.selected_option = (self.selected_option + 1)
+                    self.selected_option = ((self.selected_option + 1) % len(self.menu_options))
                 elif event.key == pygame.K_UP or event.key == pygame.K_w:
-                    self.selected_option = (self.selected_option - 1)
+                    self.selected_option = ((self.selected_option - 1) % len(self.menu_options))
                 elif event.key == pygame.K_RETURN:
                     self._handleOptions(self.menu_options[self.selected_option])
             elif event.type == pygame.MOUSEBUTTONDOWN:

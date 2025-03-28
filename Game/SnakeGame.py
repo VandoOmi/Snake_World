@@ -161,7 +161,7 @@ class SnakeGame:
         text_score = self._my_font.render("Score: {0}".format(
             self._snake.get_score()), True, (0, 0, 0))
         text_extra_Life = self._my_font.render(
-            "Extra Leben: {0}".format(self._snake.get_life()), True, (0, 0, 0))
+            "Leben: {0}".format(self._snake.get_life()), True, (0, 0, 0))
         text_highscore = self._my_font.render(f"Highscore: {self._config.get_highscore()}", True, (0, 0, 0))
         if Settings.DEBUG_MODE:
             text_speed = self._my_font.render(
@@ -180,7 +180,8 @@ class SnakeGame:
         self._screen.blit(text_score, text_score_rect)
         self._screen.blit(text_extra_Life, text_extra_life_rect)
         self._screen.blit(text_highscore, text_highscore_rect)
-        self._screen.blit(text_speed, text_speed_rect)
+        if Settings.DEBUG_MODE:
+            self._screen.blit(text_speed, text_speed_rect)
 
         pygame.display.flip()
         

@@ -7,7 +7,7 @@ grid_size = 20
 grid_width = screen_width / grid_size
 grid_height = screen_height / grid_size
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
 up = (0, -1)
 down = (0, 1)

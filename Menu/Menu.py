@@ -178,7 +178,7 @@ class Menu:
 
     def _update_sliders(self):
         
-        slider_padding = 15  # Abstand zwischen den Slidern und der Farbauswahlbox
+        slider_padding = 10  # Abstand zwischen den Slidern und der Farbauswahlbox
         slider_height = 60  # Höhe des Sliders, falls benötigt für visuelle Anpassung
 
         # Positioniere die Slider in der color_bex_rect
