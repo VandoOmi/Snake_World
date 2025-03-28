@@ -48,7 +48,6 @@ class SnakeGame:
         
     def _init_run(self):
         self._running = True
-        self._tick_speed = 5
         self._is_paused = False
         self._clock = pygame.time.Clock()
         self.gameOverBool = False
@@ -82,10 +81,6 @@ class SnakeGame:
         y_offset = (screen_y-map_height)//2
         return (x_offset, y_offset)
 
-    def _control_tick_amount(self):
-        if self._tick_speed >= 50:
-            self._tick_speed = 50
-
     def _handle_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -117,20 +112,20 @@ class SnakeGame:
         for food in self._map.get_Foods():
             if self._snake.get_head_position() == food.get_position():
                 self._snake.increase_score(1)
-                self._snake._speed += self._difficulty.speed
                 if food.get_food_type() == Game.FoodType.DOUBLE_UP:
-                    if not self._difficulty.name == "schwer":
+                    if not self._difficulty.name == "SCHWER":
                         self._snake.half_length()
                     else:
                         self._snake.increase_length(2)
-                self._snake._speed += self._difficulty.speed*3
+                    self._snake._speed += (self._difficulty.speed*2)
                 if food.get_food_type() == Game.FoodType.EXTRA_LIFE:
                     self._snake.increase_life()
                     self._snake.increase_length()
-                self._snake._speed += self._difficulty.speed
+                    self._snake._speed += self._difficulty.speed
                 if food.get_food_type() == Game.FoodType.NORMAL:
                     self._snake.increase_length()
-                    self._snake.increase_speed(self._difficulty.speed)
+                    print(self._difficulty.speed)
+                    self._snake._speed += self._difficulty.speed
                 self._map.remove_Food(food)
                 self._map.add_Food(Game.Food(random_food_type(self._difficulty), self._randomize_position_food()))
 
@@ -170,7 +165,7 @@ class SnakeGame:
         text_highscore = self._my_font.render(f"Highscore: {self._config.get_highscore()}", True, (0, 0, 0))
         if Settings.DEBUG_MODE:
             text_speed = self._my_font.render(
-                f"Speed: {self._tick_speed}", True, (0, 0, 0))
+                f"Speed: {self._snake._speed}", True, (0, 0, 0))
 
         text_score_rect = text_score.get_rect(topleft=(10, 10))
         text_extra_life_rect = text_extra_Life.get_rect(

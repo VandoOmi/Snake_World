@@ -12,7 +12,7 @@ class Snake:
         self.__positions = [((SnakeGame.map_width / 2),
                              (SnakeGame.map_height / 2))]
         self.__direction = random.choice(Settings.directions)
-        self._speed = 0.1 #SPEEEEEEEEEEDDDDDDDDDD
+        self._speed = 0.1 
         self._step = 0
         self.__score = 0
         self.__life = 0
@@ -26,7 +26,6 @@ class Snake:
             self.__direction = new_direction
 
     def move(self):
-        print(self._speed)
         self._step += self._speed
         if self._step >= 1:
             self._step -= 1
