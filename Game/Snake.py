@@ -26,6 +26,7 @@ class Snake:
             self.__direction = new_direction
 
     def move(self):
+        print(self._speed)
         self._step += self._speed
         if self._step >= 1:
             self._step -= 1

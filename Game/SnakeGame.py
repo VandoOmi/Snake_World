@@ -117,17 +117,17 @@ class SnakeGame:
         for food in self._map.get_Foods():
             if self._snake.get_head_position() == food.get_position():
                 self._snake.increase_score(1)
-                self._tick_speed = self._tick_speed + self._difficulty.speed
+                self._snake._speed += self._difficulty.speed
                 if food.get_food_type() == Game.FoodType.DOUBLE_UP:
                     if not self._difficulty.name == "schwer":
                         self._snake.half_length()
                     else:
                         self._snake.increase_length(2)
-                    self._tick_speed = self._tick_speed + self._difficulty.speed*3
+                self._snake._speed += self._difficulty.speed*3
                 if food.get_food_type() == Game.FoodType.EXTRA_LIFE:
                     self._snake.increase_life()
                     self._snake.increase_length()
-                    self._tick_speed = self._tick_speed + self._difficulty.speed
+                self._snake._speed += self._difficulty.speed
                 if food.get_food_type() == Game.FoodType.NORMAL:
                     self._snake.increase_length()
                 self._map.remove_Food(food)
@@ -217,7 +217,7 @@ class SnakeGame:
             t_acc += t_delta
             
             while t_acc > t_tick:
-            
+                
                 self._config.update()
                 self._handle_keys()
                 if not self._is_paused:
