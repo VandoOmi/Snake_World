@@ -15,7 +15,7 @@ class Snake:
         self._speed = 0.1 
         self._step = 0
         self.__score = 0
-        self.__life = 0
+        self.__life = 1
         self.__max_life = 0
         self.__temp_max_life = 0
         self._config = Config()
@@ -74,8 +74,8 @@ class Snake:
             self.__direction = random.choice(Settings.directions)
             self.saveHighscore()
             self.reset_variables()
-            return False
-        return True
+            return True
+        return False
 
     def saveHighscore(self):
         self._config.set_highscore(self.get_score())
