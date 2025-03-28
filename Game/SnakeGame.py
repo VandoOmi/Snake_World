@@ -39,7 +39,7 @@ class SnakeGame:
     def _init_snake(self, color):
         self._snake = Game.Snake()
         self._snake.set_max_life(self._difficulty.max_life)
-        self._snake.set_color(color)
+        
         
         
     def _init_surface(self):

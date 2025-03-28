@@ -19,6 +19,8 @@ class Menu:
 
         self._init_menu()  # Init MenuOptions and Font
         
+        self._init_map()
+        
         c = self.config.get_Value("color")
         self.slider_rot = Slider(pygame.Rect(1220, 450, 400, 20), c[0])
         self.slider_gruen = Slider(pygame.Rect(1220, 480, 400, 20), c[1])
@@ -81,9 +83,24 @@ class Menu:
             for x in range(0, int(Settings.grid_width)):
                 r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size),
                                 (Settings.grid_size, Settings.grid_size))
-                color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
+                
+                color = self.primary_map_color if (x + y) % 2 == 0 else self.secoundary_map_color
                 pygame.draw.rect(surface, color, r)
-
+    def _init_map(self):
+        from Game import Map
+        self.snake_color = self.config.get_Value("color")
+        self.primary_map_color = (
+            255 - self.snake_color[0],
+            255 - self.snake_color[1],
+            255 - self.snake_color[2]
+        ) 
+        self.secoundary_map_color = (
+            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
+            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20,
+            self.primary_map_color[0] -20 if self.primary_map_color[0] -20 >= 0 else self.primary_map_color[0] +20
+        )
+        
+        
     def _build_info_box(self):
         self.config.update()
         self.back_info_box = pygame.Surface((520, 180)).convert()
@@ -205,6 +222,7 @@ class Menu:
         self._screen.blit(blau_text, (self.slider_blau.rect.right + 10, self.slider_blau.rect.centery - blau_text.get_height() // 2))
 
         self.config.set_color(self.slider_rot.get_value(), self.slider_gruen.get_value(), self.slider_blau.get_value())
+        self._init_map()
 
     def get_difficulty(self):
         return self.config.get_Difficulty()
