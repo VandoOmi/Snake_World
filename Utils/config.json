@@ -1,5 +1,5 @@
 {
-    "Difficulty": "MITTEL",
+    "Difficulty": "LEICHT",
     "highscore": {
         "SCHWER": 10,
         "MITTEL": 17,
@@ -7,7 +7,7 @@
     },
     "color": [
         123,
-        220,
-        0
+        39,
+        134
     ]
 }
