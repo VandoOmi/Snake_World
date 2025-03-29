@@ -1,0 +1,3 @@
+dependences:
+
+pygame-ce (pygame)

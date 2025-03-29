@@ -80,6 +80,10 @@ class Snake:
         self.__score = 0
         self.__max_life = self.__temp_max_life
         self.__life = 0
+        self._speed = 0.1
+        self._step = 0
+
+
 
     def increase_length(self, value=1):
         self.__length += value
