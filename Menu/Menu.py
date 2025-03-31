@@ -38,6 +38,9 @@ class Menu:
                 self._quit()
                 self._shouldClose = True
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DELETE:
+                    self._quit()
+                    self._shouldClose = True
                 if event.key == pygame.K_ESCAPE:
                     self._quit()
                     self._shouldClose = True
@@ -118,7 +121,7 @@ class Menu:
         self.info_bex_rect.right = self.menu_surf_rect.left
         self.info_bex_rect.centery = Settings.screen_height // 2
 
-        text_color = (80, 80, 80)
+        text_color = (70, 70, 70)
 
         highscore = self.info_font.render(
             f"Highscore: {self.config.get_highscore()}", False, text_color)
