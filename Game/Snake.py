@@ -19,6 +19,7 @@ class Snake:
         self.__max_life = 0
         self.__temp_max_life = 0
         self._config = Config()
+        self.gameOver = False
 
     def turn(self, new_direction):
         if (new_direction[0] * -1, new_direction[1] * -1) != self.__direction:  # cannot do a 180
@@ -36,7 +37,6 @@ class Snake:
                 self.decrease_life()
                 if self.__life <= 0:
                     return self.reset()
-
             else:
                 self.__positions.insert(0, new)
                 if len(self.__positions) > self.__length:
@@ -69,6 +69,7 @@ class Snake:
             self.__direction = random.choice(Settings.directions)
             self.saveHighscore()
             self.reset_variables()
+            self.gameOver = True
             return True
         return False
 

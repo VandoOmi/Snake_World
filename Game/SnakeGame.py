@@ -220,10 +220,9 @@ class SnakeGame:
 
             while t_acc > t_tick:
 
-                self._config.update()
                 self._handle_keys()
                 if not self._is_paused:
-
+                    
                     if self.gameOverBool:
                         self._gameover()
                     elif self._snake.move():
