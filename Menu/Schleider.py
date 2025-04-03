@@ -8,11 +8,11 @@ class Slider:
         self.rect = rect
         self.min_value = min_value
         self.max_value = max_value
-        self.value = initial_value
+        self.get_value = initial_value
 
         # schieberegler
         self.slider_rect = pygame.Rect(
-            rect.x + self.value * (rect.width / (max_value - min_value)), rect.y, 10, rect.height)
+            rect.x + self.get_value * (rect.width / (max_value - min_value)), rect.y, 10, rect.height)
         self.dragging = False
 
     def draw(self, screen):
@@ -30,7 +30,7 @@ class Slider:
                 x = self.rect.right - 10
             self.slider_rect.x = x
             # Wert des Schiebereglers berechnen
-            self.value = int((self.slider_rect.x - self.rect.x) /
+            self.get_value = int((self.slider_rect.x - self.rect.x) /
                              (self.rect.width / (self.max_value - self.min_value)))
 
         if mouse_pressed[0]:
@@ -38,9 +38,6 @@ class Slider:
                 self.dragging = True
         else:
             self.dragging = False
-
-    def value(self):
-        return self.value
 
     # Positioniere den Schieberegler auf der Y-Achse
     def set_y_position(self, y):

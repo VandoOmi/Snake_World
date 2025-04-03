@@ -195,9 +195,9 @@ class Menu:
         self._draw_slider(slider_padding, slider_height)
         self._slider_text()
 
-        self.config.set_color(self.r_slider.value,
-                              self.g_slider.value, 
-                              self.b_slider.value)
+        self.config.set_color(self.r_slider.get_value,
+                              self.g_slider.get_value, 
+                              self.b_slider.get_value)
         self._init_map()
 
     def _postion_slider(self, padding, height):
@@ -218,19 +218,19 @@ class Menu:
 
         # Rot: Name + Wert anzeigen
         rot_text = slider_label_font.render(
-            f"Rot:{self.r_slider.value}", True, text_color)
+            f"Rot:{self.r_slider.get_value}", True, text_color)
         self._screen.blit(rot_text, (self.r_slider.rect.right + 10,
                           self.r_slider.rect.centery - rot_text.get_height() // 2))
 
         # Grün: Name + Wert anzeigen
         gruen_text = slider_label_font.render(
-            f"Grün:{self.g_slider.value}", True, text_color)
+            f"Grün:{self.g_slider.get_value}", True, text_color)
         self._screen.blit(gruen_text, (self.g_slider.rect.right + 10,
                           self.g_slider.rect.centery - gruen_text.get_height() // 2))
 
         # Blau: Name + Wert anzeigen
         blau_text = slider_label_font.render(
-            f"Blau:{self.b_slider.value}", True, text_color)
+            f"Blau:{self.b_slider.get_value}", True, text_color)
         self._screen.blit(blau_text, (self.b_slider.rect.right + 10,
                           self.b_slider.rect.centery - blau_text.get_height() // 2))
 
