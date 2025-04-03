@@ -15,7 +15,7 @@ class Schwierigkeit(Enum):
         self._blue_food = blue_food
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property

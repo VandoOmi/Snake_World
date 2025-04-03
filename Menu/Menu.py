@@ -15,6 +15,7 @@ class Menu:
 
         self._isEinstellungenOffen = False
         self.config = Config()
+        self.config.pullHighscores()
 
         self._init_menu()  # Init MenuOptions and Font
 
@@ -108,7 +109,7 @@ class Menu:
         )
 
     def _build_info_box(self):
-        self.config.update()
+        #self.config.update()
         self.back_info_box = pygame.Surface((520, 180)).convert()
         self.back_info_box.fill('white')
         self.back_info_box.set_alpha(100)
