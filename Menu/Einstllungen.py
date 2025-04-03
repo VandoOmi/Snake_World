@@ -12,7 +12,7 @@ class Einstellungen:
         self._shouldClose = False
 
         self.config = Config()
-
+        self._init_map()
         self.buttons = {}
 
         self.menu_font = pygame.font.SysFont("monospace", 50, True)
@@ -20,6 +20,24 @@ class Einstellungen:
 
         self.menu_options = ["Schwer", "Mittel", "Leicht", "Zurück"]
         self.selected_option = 0
+        
+
+    def _init_map(self):
+        from Game import Map
+        self.snake_color = self.config.get_Value("color")
+        self.primary_map_color = (
+            255 - self.snake_color[0],
+            255 - self.snake_color[1],
+            255 - self.snake_color[2]
+        )
+        self.secoundary_map_color = (
+            self.primary_map_color[0] - 20 if self.primary_map_color[0] -
+            20 >= 0 else self.primary_map_color[0] + 20,
+            self.primary_map_color[0] - 20 if self.primary_map_color[0] -
+            20 >= 0 else self.primary_map_color[0] + 20,
+            self.primary_map_color[0] - 20 if self.primary_map_color[0] -
+            20 >= 0 else self.primary_map_color[0] + 20
+        )
 
     def _handleEvents(self):
         for event in pygame.event.get():
@@ -64,7 +82,8 @@ class Einstellungen:
             for x in range(0, int(Settings.grid_width)):
                 r = pygame.Rect((x * Settings.grid_size, y * Settings.grid_size),
                                 (Settings.grid_size, Settings.grid_size))
-                color = (93, 216, 228) if (x + y) % 2 == 0 else (84, 194, 205)
+                color = self.primary_map_color if (
+                    x + y) % 2 == 0 else self.secoundary_map_color
                 pygame.draw.rect(surface, color, r)
 
     def _build_info_box(self):
